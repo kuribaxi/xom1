@@ -136,6 +136,8 @@
                 <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod8.m3u8?t=1757875753737" data-name="IRAN JAVAN" onclick="playChannel(this)">IRAN JAVAN</div>
                 <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod4.m3u8?t=1758043626255" data-name="CAFEBAZI" onclick="playChannel(this)">CAFEBAZI</div>
                 <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod10.m3u8?t=1757875758664" data-name="FILM" onclick="playChannel(this)">FILM</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://ncdn.telewebion.com/mahabad/live/playlist.m3u8" data-name="MAHABAD" onclick="playChannel(this)">MAHABAD</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://live-azd1118.telewebion.com/ek/javaneh/live/720p/index.m3u8" data-name="KOODAK+" onclick="playChannel(this)">KOODAK+</div>
             </div>
             <div class="section">
                 <h2>🏙️ Regionala Kanaler</h2>
@@ -228,11 +230,11 @@
                 video.play().catch(error => {
                     console.error('Autoplay failed:', error);
                     channelNameElement.textContent = `${channelName} (Starta videon manuellt)`;
-                });
-            } else {
-                channelNameElement.textContent = `${channelName} (Webbläsaren stöder inte HLS.)`;
+                    });
+                } else {
+                    channelNameElement.textContent = `${channelName} (Webbläsaren stöder inte HLS.)`;
+                }
             }
-        }
     </script>
 </body>
 </html>
