@@ -70,7 +70,8 @@
             transform: translateY(-2px);
         }
         .channel.active-channel {
-            color: red; /* Ändrar textfärg till rött för den aktiva kanalen */
+            background: #ff6b6b !important;
+            color: white;
         }
         .player-section {
             flex: 3;
@@ -87,6 +88,26 @@
             font-size: 2em;
             color: #4ecdc4;
             margin: 10px 0;
+        }
+        .error-message {
+            color: #ff6b6b;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .play-button {
+            display: none;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background: #4ecdc4;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .play-button:hover {
+            background: #45b7aa;
         }
         @media (max-width: 600px) {
             .container {
@@ -136,8 +157,9 @@
                 <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod8.m3u8?t=1757875753737" data-name="IRAN JAVAN" onclick="playChannel(this)">IRAN JAVAN</div>
                 <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod4.m3u8?t=1758043626255" data-name="CAFEBAZI" onclick="playChannel(this)">CAFEBAZI</div>
                 <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod10.m3u8?t=1757875758664" data-name="FILM" onclick="playChannel(this)">FILM</div>
-                <div class="channel" data-stream="https://corsproxy.io/?https://live-azd1109.telewebion.com/ek/mahabad/live/576p/index.m3u8" data-name="MAHABAD" onclick="playChannel(this)">MAHABAD</div>
-                <div class="channel" data-stream="https://corsproxy.io/?https://live-azd1118.telewebion.com/ek/javaneh/live/720p/index.m3u8" data-name="KOODAK+" onclick="playChannel(this)">KOODAK+</div>
+                <!-- Använd alternativ proxy för Mahabad och Koodak+ -->
+                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://live-azd1109.telewebion.com/ek/mahabad/live/576p/index.m3u8" data-name="MAHABAD" onclick="playChannel(this)">MAHABAD</div>
+                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://live-azd1118.telewebion.com/ek/javaneh/live/720p/index.m3u8" data-name="KOODAK+" onclick="playChannel(this)">KOODAK+</div>
             </div>
             <div class="section">
                 <h2>🏙️ Regionala Kanaler</h2>
@@ -172,19 +194,38 @@
         </div>
         <div class="player-section">
             <h1 class="channel-name" id="channelName">Välj en kanal</h1>
-            <video id="player" controls></video>
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <button id="playButton" class="play-button">Spela upp</button>
+            <video id="player" controls muted></video>
         </div>
     </div>
     <script>
         const video = document.getElementById('player');
         const channelNameElement = document.getElementById('channelName');
+        const errorMessageElement = document.getElementById('errorMessage');
+        const playButton = document.getElementById('playButton');
         let hls = null;
         let activeChannel = null;
+        let currentStreamUrl = '';
+
+        function showError(msg) {
+            errorMessageElement.textContent = msg;
+            errorMessageElement.style.display = 'block';
+            playButton.style.display = 'block'; // Visa play-knapp vid fel
+            console.error('Stream Error:', msg);
+        }
+
+        function hideError() {
+            errorMessageElement.style.display = 'none';
+            playButton.style.display = 'none';
+        }
 
         function playChannel(element) {
             const streamUrl = element.getAttribute('data-stream');
             const channelName = element.getAttribute('data-name');
             channelNameElement.textContent = channelName;
+            currentStreamUrl = streamUrl;
+            hideError();
 
             // Ta bort active-class från tidigare kanal
             if (activeChannel) {
@@ -196,45 +237,82 @@
 
             if (hls) {
                 hls.destroy();
+                hls = null;
             }
 
-            video.src = streamUrl;
+            video.src = '';
             video.load();
+
+            console.log('Försöker ladda stream:', streamUrl);
+
+            const timeout = setTimeout(() => {
+                showError(`${channelName} (Timeout: Stream laddas inte. Klicka på Spela upp eller kolla konsolen.)`);
+            }, 10000); // 10 sek timeout
 
             if (Hls.isSupported()) {
                 hls = new Hls({
                     debug: true,
                     xhrSetup: function (xhr, url) {
-                        console.log('Försöker ladda:', url);
+                        // Lägg till user-agent för att efterlikna webbläsare
+                        xhr.setRequestHeader('User-Agent', navigator.userAgent);
+                        console.log('HLS laddar:', url);
                     }
                 });
                 hls.loadSource(streamUrl);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    clearTimeout(timeout);
+                    console.log('Manifest laddat för', channelName);
                     video.play().catch(error => {
-                        console.error('Autoplay failed:', error);
-                        channelNameElement.textContent = `${channelName} (Starta videon manuellt)`;
+                        console.error('Autoplay misslyckades:', error);
+                        showError(`${channelName} (Klicka på Spela upp för att starta videon.)`);
                     });
                 });
                 hls.on(Hls.Events.ERROR, (event, data) => {
+                    clearTimeout(timeout);
                     console.error('HLS Error Details:', data);
+                    let errorMsg = `${channelName} (HLS-fel)`;
                     if (data.details === 'manifestLoadError') {
-                        channelNameElement.textContent = `${channelName} (Fel: Manifest kunde inte laddas. Se konsolen.)`;
+                        errorMsg += ': Manifest kunde inte laddas (stream offline?).';
                     } else if (data.details === 'networkError') {
-                        channelNameElement.textContent = `${channelName} (Fel: Nätverksproblem. Se konsolen.)`;
+                        errorMsg += ': Nätverksproblem (prova annan proxy eller VPN).';
+                    } else if (data.fatal) {
+                        errorMsg += ': Kritiskt fel – försök ladda om eller klicka Spela upp.';
+                        hls.recoverMediaError();
                     } else {
-                        channelNameElement.textContent = `${channelName} (Fel: Okänt HLS-problem. Se konsolen.)`;
+                        errorMsg += ': Okänt problem.';
                     }
+                    showError(errorMsg);
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.play().catch(error => {
-                    console.error('Autoplay failed:', error);
-                    channelNameElement.textContent = `${channelName} (Starta videon manuellt)`;
+                // Native HLS fallback (t.ex. Safari)
+                clearTimeout(timeout);
+                video.src = streamUrl;
+                video.addEventListener('loadedmetadata', () => {
+                    video.play().catch(error => {
+                        console.error('Autoplay failed:', error);
+                        showError(`${channelName} (Klicka på Spela upp för att starta videon.)`);
                     });
-                } else {
-                    channelNameElement.textContent = `${channelName} (Webbläsaren stöder inte HLS.)`;
-                }
+                });
+                video.addEventListener('error', (e) => {
+                    showError(`${channelName} (Native HLS-fel: ${e.message || 'Stream otillgänglig'}. Klicka på Spela upp.)`);
+                });
+            } else {
+                clearTimeout(timeout);
+                showError(`${channelName} (Webbläsaren stöder inte HLS. Använd Chrome/Edge/Safari.)`);
             }
+        }
+
+        // Manuell play-knapp
+        playButton.addEventListener('click', () => {
+            if (currentStreamUrl) {
+                hideError();
+                video.play().catch(error => {
+                    console.error('Manuell uppspelning misslyckades:', error);
+                    showError(`${channelNameElement.textContent} (Fel vid uppspelning: ${error.message}. Försök igen.)`);
+                });
+            }
+        });
     </script>
 </body>
 </html>
