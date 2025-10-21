@@ -148,7 +148,7 @@
                 <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod4.m3u8?t=1758043626255" data-name="CAFEBAZI" onclick="playChannel(this)">CAFEBAZI</div>
                 <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod10.m3u8?t=1757875758664" data-name="FILM" onclick="playChannel(this)">FILM</div>
                 <div class="channel" data-iframe="https://www.parsatv.com/name=Mahabad" data-name="MAHABAD" onclick="playChannel(this)">MAHABAD</div>
-                <div class="channel" data-stream="https://corsproxy.io/?https://live-azd1118.telewebion.com/ek/javaneh/live/720p/index.m3u8" data-name="KOODAK+" onclick="playChannel(this)">KOODAK+</div>
+                <div class="channel" data-iframe="https://telewebion.com/live/javaneh" data-name="KOODAK+" onclick="playChannel(this)">KOODAK+</div>
             </div>
             <div class="section">
                 <h2>🏙️ Regionala Kanaler</h2>
@@ -214,8 +214,8 @@
             // Rensa tidigare spelare
             playerContainer.innerHTML = '';
 
-            if (channelName === 'MAHABAD' && iframeUrl) {
-                // Använd iframe för Mahabad
+            if (iframeUrl) {
+                // Använd iframe för Mahabad och Koodak+
                 const iframe = document.createElement('iframe');
                 iframe.id = 'player';
                 iframe.src = iframeUrl;
@@ -223,7 +223,7 @@
                 iframe.style.width = '100%';
                 iframe.style.height = '400px';
                 playerContainer.appendChild(iframe);
-                console.log('Iframe laddad för Mahabad:', iframeUrl);
+                console.log('Iframe laddad för', channelName, ':', iframeUrl);
             } else {
                 // Använd HLS.js för andra kanaler
                 playerContainer.innerHTML = '<video id="player" controls></video>';
