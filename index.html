@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -180,7 +181,7 @@
         <div class="header">
             <h1>📺 XOM TV</h1>
             <p>Iranska och Kurdiska TV-kanaler • Klicka för att titta</p>
-            <p class="warning">Kurdiska kanaler från karwan.tv öppnas i ett nytt fönster. Övriga kurdiska kanaler, KOODAK+ och MAHABAD använder en separat videospelare för bättre kompatibilitet.</p>
+            <p class="warning">Kurdiska kanaler från karwan.tv och TEST-kanalen öppnas i ett nytt fönster. Övriga kurdiska kanaler, KOODAK+ och MAHABAD använder en separat videospelare för bättre kompatibilitet.</p>
             <div class="controls">
                 <label style="cursor:pointer;"><input type="checkbox" id="onlyFavCheckbox"> Visa endast favoriter</label>
                 <span style="margin-left:10px; color:#ccc;">(Klicka på stjärnan för att lägga till/taga bort favorit)</span>
@@ -217,7 +218,7 @@
                 <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod10.m3u8?t=1757875758664" data-name="FILM" onclick="playChannel(this)">FILM</div>
                 <div class="channel" data-iframe="https://www.parsatv.com/name=Mahabad" data-name="MAHABAD" data-kurdish="true" onclick="playChannel(this)">MAHABAD</div>
                 <div class="channel" data-iframe="https://telewebion.com/live/javaneh" data-name="KOODAK+" data-kurdish="true" onclick="playChannel(this)">KOODAK+</div>
-                <div class="channel" data-iframe="https://karwan.tv/" data-name="TEST" data-kurdish="true" onclick="playChannel(this)">TEST</div>
+                <div class="channel" data-stream="https://karwan.tv/" data-name="TEST" data-kurdish="true" data-redirect="true" onclick="playChannel(this)">TEST</div>
             </div>
             <div class="section">
                 <h2>🏙️ Regionala Kanaler</h2>
@@ -550,7 +551,7 @@
                     } else {
                         // Fallback: construct a temp element with attributes
                         const tmp = document.createElement('div');
-                        if (stream.includes('parsatv.com') || stream.includes('telewebion.com') || stream.includes('karwan.tv')) {
+                        if (stream.includes('parsatv.com') || stream.includes('telewebion.com')) {
                             tmp.setAttribute('data-iframe', stream);
                         } else {
                             tmp.setAttribute('data-stream', stream);
@@ -634,7 +635,7 @@
                 return;
             }
 
-            // Hantera iframe-kanaler (Mahabad, Koodak+, TEST)
+            // Hantera iframe-kanaler (Mahabad, Koodak+)
             if (iframeUrl) {
                 // Dölj video-spelare
                 mainPlayer.classList.remove('active-player');
@@ -725,17 +726,18 @@
                 video.play().catch(error => {
                     console.error('Autoplay misslyckades:', error);
                     channelNameElement.textContent = `${channelName} (Starta videon manuellt: ${error.message})`;
-                    });
-                } else {
-                    channelNameElement.textContent = `${channelName} (Webbläsaren stöder inte HLS.)`;
-                }
+                });
+            } else {
+                channelNameElement.textContent = `${channelName} (Webbläsaren stöder inte HLS.)`;
             }
+        }
 
-            // Initialize on load
-            document.addEventListener('DOMContentLoaded', () => {
-                initChannelList();
-                applyFilter();
-            });
-        </script>
-    </body>
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initChannelList();
+            applyFilter();
+        });
+    </script>
+</body>
 </html>
+```
