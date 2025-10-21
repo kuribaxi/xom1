@@ -4,9 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>XOM TV - Iranska Kanaler</title>
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-    <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
-    <script src="https://unpkg.com/@videojs/http-streaming"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -80,7 +78,7 @@
             max-width: 75%;
             text-align: center;
         }
-        .player-section .video-js {
+        .player-section video {
             width: 100%;
             max-width: 100%;
             border-radius: 10px;
@@ -112,7 +110,7 @@
             .channel-name {
                 font-size: 1.5em;
             }
-            .player-section .video-js, .player-section iframe {
+            .player-section video, .player-section iframe {
                 height: 300px;
             }
         }
@@ -127,73 +125,74 @@
         <div class="channel-list">
             <div class="section">
                 <h2>⭐ Iranska Kanaler</h2>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/tv1.m3u8?t=1757870529226" data-name="TV1" onclick="playChannel(this)">TV1</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/tv2.m3u8?t=1757871250791" data-name="TV2" onclick="playChannel(this)">TV2</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/tv3.m3u8?t=1757871251942" data-name="TV3" onclick="playChannel(this)">TV3</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/tv4.m3u8?t=1757871254788" data-name="TV4" onclick="playChannel(this)">TV4</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/tv5.m3u8?t=1757871279765" data-name="TV5" onclick="playChannel(this)">TV5</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/nasim.m3u8?t=1757871258347" data-name="NASIM" onclick="playChannel(this)">NASIM</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/irinn.m3u8?t=1757871268758" data-name="KHABAR1" onclick="playChannel(this)">KHABAR1</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/irinn2.m3u8?t=1757871261314" data-name="KHABAR2" onclick="playChannel(this)">KHABAR2</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/varzesh.m3u8?t=1757871272209" data-name="VARZESH" onclick="playChannel(this)">VARZESH</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/pouya.m3u8?t=1757871287034" data-name="POUYA" onclick="playChannel(this)">POUYA</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/omid.m3u8?t=1757871317760" data-name="OMID" onclick="playChannel(this)">OMID</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/ifilm.m3u8?t=1757871643731" data-name="IFILM" onclick="playChannel(this)">IFILM</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/namayesh.m3u8?t=1757871719649" data-name="NAMAYESH" onclick="playChannel(this)">NAMAYESH</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/tamasha.m3u8?t=1757871721596" data-name="TAMASHA" onclick="playChannel(this)">TAMASHA</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/mostanad.m3u8?t=1757871724100" data-name="MOSTANAD" onclick="playChannel(this)">MOSTANAD</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/amozesh.m3u8?t=1757871727005" data-name="AMOZESH" onclick="playChannel(this)">AMOZESH</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/salamat.m3u8?t=1757871731152" data-name="SALAMAT" onclick="playChannel(this)">SALAMAT</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/ofogh.m3u8?t=1757871731152" data-name="OFOGH" onclick="playChannel(this)">OFOGH</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/nvod1.m3u8?t=1757875752133" data-name="KOODAK" onclick="playChannel(this)">KOODAK</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/nvod8.m3u8?t=1757875753737" data-name="IRAN JAVAN" onclick="playChannel(this)">IRAN JAVAN</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/nvod4.m3u8?t=1758043626255" data-name="CAFEBAZI" onclick="playChannel(this)">CAFEBAZI</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/nvod10.m3u8?t=1757875758664" data-name="FILM" onclick="playChannel(this)">FILM</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://live-azd1118.telewebion.com/ek/mahabad/live/720p/index.m3u8" data-iframe="https://www.parsatv.com/embed/Mahabad" data-name="MAHABAD" onclick="playChannel(this)">MAHABAD</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://live-azd1118.telewebion.com/ek/javaneh/live/720p/index.m3u8" data-name="KOODAK+" onclick="playChannel(this)">KOODAK+</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/tv1.m3u8?t=1757870529226" data-name="TV1" onclick="playChannel(this)">TV1</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/tv2.m3u8?t=1757871250791" data-name="TV2" onclick="playChannel(this)">TV2</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/tv3.m3u8?t=1757871251942" data-name="TV3" onclick="playChannel(this)">TV3</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/tv4.m3u8?t=1757871254788" data-name="TV4" onclick="playChannel(this)">TV4</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/tv5.m3u8?t=1757871279765" data-name="TV5" onclick="playChannel(this)">TV5</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nasim.m3u8?t=1757871258347" data-name="NASIM" onclick="playChannel(this)">NASIM</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/irinn.m3u8?t=1757871268758" data-name="KHABAR1" onclick="playChannel(this)">KHABAR1</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/irinn2.m3u8?t=1757871261314" data-name="KHABAR2" onclick="playChannel(this)">KHABAR2</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/varzesh.m3u8?t=1757871272209" data-name="VARZESH" onclick="playChannel(this)">VARZESH</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/pouya.m3u8?t=1757871287034" data-name="POUYA" onclick="playChannel(this)">POUYA</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/omid.m3u8?t=1757871317760" data-name="OMID" onclick="playChannel(this)">OMID</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/ifilm.m3u8?t=1757871643731" data-name="IFILM" onclick="playChannel(this)">IFILM</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/namayesh.m3u8?t=1757871719649" data-name="NAMAYESH" onclick="playChannel(this)">NAMAYESH</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/tamasha.m3u8?t=1757871721596" data-name="TAMASHA" onclick="playChannel(this)">TAMASHA</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/mostanad.m3u8?t=1757871724100" data-name="MOSTANAD" onclick="playChannel(this)">MOSTANAD</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/amozesh.m3u8?t=1757871727005" data-name="AMOZESH" onclick="playChannel(this)">AMOZESH</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/salamat.m3u8?t=1757871731152" data-name="SALAMAT" onclick="playChannel(this)">SALAMAT</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/ofogh.m3u8?t=1757871731152" data-name="OFOGH" onclick="playChannel(this)">OFOGH</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod1.m3u8?t=1757875752133" data-name="KOODAK" onclick="playChannel(this)">KOODAK</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod8.m3u8?t=1757875753737" data-name="IRAN JAVAN" onclick="playChannel(this)">IRAN JAVAN</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod4.m3u8?t=1758043626255" data-name="CAFEBAZI" onclick="playChannel(this)">CAFEBAZI</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/nvod10.m3u8?t=1757875758664" data-name="FILM" onclick="playChannel(this)">FILM</div>
+                <div class="channel" data-iframe="https://www.parsatv.com/name=Mahabad" data-name="MAHABAD" onclick="playChannel(this)">MAHABAD</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://live-azd1118.telewebion.com/ek/javaneh/live/720p/index.m3u8" data-name="KOODAK+" onclick="playChannel(this)">KOODAK+</div>
             </div>
             <div class="section">
                 <h2>🏙️ Regionala Kanaler</h2>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/alborz.m3u8?t=1757871975911" data-name="ALBORZ" onclick="playChannel(this)">ALBORZ</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/rasht.m3u8?t=1757871977771" data-name="RASHT" onclick="playChannel(this)">RASHT</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/mazandaran.m3u8?t=1757871980048" data-name="MAZANDARAN" onclick="playChannel(this)">MAZANDARAN</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/tabriz.m3u8?t=1757871982316" data-name="TABRIZ" onclick="playChannel(this)">TABRIZ</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/booshehr.m3u8?t=1757871985788" data-name="BOSHEHR" onclick="playChannel(this)">BOSHEHR</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/ahvaz.m3u8?t=1757871988922" data-name="AHVAZ" onclick="playChannel(this)">AHVAZ</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/bandarabas.m3u8?t=1757872000212" data-name="BANDARABBAS" onclick="playChannel(this)">BANDARABBAS</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/esfehan.m3u8?t=1757872000859" data-name="ESFFAHAN" onclick="playChannel(this)">ESFFAHAN</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/kordestan.m3u8?t=1757872007497" data-name="KORDESTAN" onclick="playChannel(this)">KORDESTAN</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/markazi.m3u8?t=1757872014857" data-name="MARKAZI" onclick="playChannel(this)">MARKAZI</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/khorasaneshomali.m3u8?t=1757872023492" data-name="KHORASAN SHOMALI" onclick="playChannel(this)">KHORASAN SHOMALI</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/khorasanejonoobi.m3u8?t=1757872029298" data-name="KHORASAN GONOBI" onclick="playChannel(this)">KHORASAN GONOBI</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/yazd.m3u8?t=1757872042742" data-name="YAZD" onclick="playChannel(this)">YAZD</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/ardabil.m3u8?t=1757872047367" data-name="ARDABIL" onclick="playChannel(this)">ARDABIL</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/jahanbin.m3u8?t=1757872052388" data-name="SHAHREKORD" onclick="playChannel(this)">SHAHREKORD</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/yasooj.m3u8?t=1757872056013" data-name="YASOOJ" onclick="playChannel(this)">YASOOJ</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/zahedan.m3u8?t=1757873645577" data-name="ZAHEDAN" onclick="playChannel(this)">ZAHEDAN</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/qazvin.m3u8?t=1757873648511" data-name="QAZVIN" onclick="playChannel(this)">QAZVIN</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/semnan.m3u8?t=1757873651036" data-name="SEMNAN" onclick="playChannel(this)">SEMNAN</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/fars.m3u8?t=1757873654282" data-name="FARS" onclick="playChannel(this)">FARS</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/qom.m3u8?t=1757873657938" data-name="QOM" onclick="playChannel(this)">QOM</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/azarbijan-gharbi.m3u8?t=1758056922997" data-name="UROMIYEH" onclick="playChannel(this)">UROMIYEH</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/golestan.m3u8?t=1757873668114" data-name="GORGAN" onclick="playChannel(this)">GORGAN</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/eshragh.m3u8?t=1757873879629" data-name="ESHRAGH" onclick="playChannel(this)">ESHRAGH</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/khorasanerazavi.m3u8?t=1757873882640" data-name="KHORASAN RAZAVI" onclick="playChannel(this)">KHORASAN RAZAVI</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/kermanshah.m3u8?t=1757873886210" data-name="KERMANSHAH" onclick="playChannel(this)">KERMANSHAH</div>
-                <div class="channel" data-stream="https://api.allorigins.win/raw?url=https://www.fam.ir/api/bp-player/get-link/igap/kerman.m3u8?t=1757873889837" data-name="KERMAN" onclick="playChannel(this)">KERMAN</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/alborz.m3u8?t=1757871975911" data-name="ALBORZ" onclick="playChannel(this)">ALBORZ</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/rasht.m3u8?t=1757871977771" data-name="RASHT" onclick="playChannel(this)">RASHT</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/mazandaran.m3u8?t=1757871980048" data-name="MAZANDARAN" onclick="playChannel(this)">MAZANDARAN</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/tabriz.m3u8?t=1757871982316" data-name="TABRIZ" onclick="playChannel(this)">TABRIZ</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/booshehr.m3u8?t=1757871985788" data-name="BOSHEHR" onclick="playChannel(this)">BOSHEHR</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/ahvaz.m3u8?t=1757871988922" data-name="AHVAZ" onclick="playChannel(this)">AHVAZ</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/bandarabas.m3u8?t=1757872000212" data-name="BANDARABBAS" onclick="playChannel(this)">BANDARABBAS</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/esfehan.m3u8?t=1757872000859" data-name="ESFFAHAN" onclick="playChannel(this)">ESFFAHAN</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/kordestan.m3u8?t=1757872007497" data-name="KORDESTAN" onclick="playChannel(this)">KORDESTAN</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/markazi.m3u8?t=1757872014857" data-name="MARKAZI" onclick="playChannel(this)">MARKAZI</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/khorasaneshomali.m3u8?t=1757872023492" data-name="KHORASAN SHOMALI" onclick="playChannel(this)">KHORASAN SHOMALI</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/khorasanejonoobi.m3u8?t=1757872029298" data-name="KHORASAN GONOBI" onclick="playChannel(this)">KHORASAN GONOBI</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/yazd.m3u8?t=1757872042742" data-name="YAZD" onclick="playChannel(this)">YAZD</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/ardabil.m3u8?t=1757872047367" data-name="ARDABIL" onclick="playChannel(this)">ARDABIL</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/jahanbin.m3u8?t=1757872052388" data-name="SHAHREKORD" onclick="playChannel(this)">SHAHREKORD</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/yasooj.m3u8?t=1757872056013" data-name="YASOOJ" onclick="playChannel(this)">YASOOJ</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/zahedan.m3u8?t=1757873645577" data-name="ZAHEDAN" onclick="playChannel(this)">ZAHEDAN</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/qazvin.m3u8?t=1757873648511" data-name="QAZVIN" onclick="playChannel(this)">QAZVIN</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/semnan.m3u8?t=1757873651036" data-name="SEMNAN" onclick="playChannel(this)">SEMNAN</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/fars.m3u8?t=1757873654282" data-name="FARS" onclick="playChannel(this)">FARS</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/qom.m3u8?t=1757873657938" data-name="QOM" onclick="playChannel(this)">QOM</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/azarbijan-gharbi.m3u8?t=1758056922997" data-name="UROMIYEH" onclick="playChannel(this)">UROMIYEH</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/golestan.m3u8?t=1757873668114" data-name="GORGAN" onclick="playChannel(this)">GORGAN</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/eshragh.m3u8?t=1757873879629" data-name="ESHRAGH" onclick="playChannel(this)">ESHRAGH</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/khorasanerazavi.m3u8?t=1757873882640" data-name="KHORASAN RAZAVI" onclick="playChannel(this)">KHORASAN RAZAVI</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/kermanshah.m3u8?t=1757873886210" data-name="KERMANSHAH" onclick="playChannel(this)">KERMANSHAH</div>
+                <div class="channel" data-stream="https://corsproxy.io/?https://www.fam.ir/api/bp-player/get-link/igap/kerman.m3u8?t=1757873889837" data-name="KERMAN" onclick="playChannel(this)">KERMAN</div>
             </div>
         </div>
         <div class="player-section">
             <h1 class="channel-name" id="channelName">Välj en kanal</h1>
             <div id="player-container">
-                <video id="player" class="video-js vjs-default-skin" controls></video>
+                <video id="player" controls></video>
             </div>
         </div>
     </div>
     <script>
-        const playerContainer = document.getElementById('player-container');
+        const video = document.getElementById('player');
         const channelNameElement = document.getElementById('channelName');
-        let player = null;
+        const playerContainer = document.getElementById('player-container');
+        let hls = null;
         let activeChannel = null;
 
         function playChannel(element) {
@@ -221,49 +220,49 @@
                 iframe.id = 'player';
                 iframe.src = iframeUrl;
                 iframe.allowFullscreen = true;
+                iframe.style.width = '100%';
+                iframe.style.height = '400px';
                 playerContainer.appendChild(iframe);
                 console.log('Iframe laddad för Mahabad:', iframeUrl);
             } else {
-                // Använd Video.js för andra kanaler
-                const video = document.createElement('video');
-                video.id = 'player';
-                video.className = 'video-js vjs-default-skin';
-                video.controls = true;
-                playerContainer.appendChild(video);
+                // Använd HLS.js för andra kanaler
+                playerContainer.innerHTML = '<video id="player" controls></video>';
+                const video = document.getElementById('player');
 
-                if (player) {
-                    player.dispose();
+                if (hls) {
+                    hls.destroy();
+                    hls = null;
                 }
-                player = videojs('player', {
-                    fluid: true,
-                    html5: {
-                        hls: {
-                            withCredentials: false
-                        }
-                    }
-                });
 
-                player.src({
-                    src: streamUrl,
-                    type: 'application/x-mpegURL'
-                });
-
-                player.ready(() => {
-                    player.play().catch(error => {
-                        console.error('Uppspelning misslyckades:', error);
-                        channelNameElement.textContent = `${channelName} (Klicka play manuellt)`;
+                if (Hls.isSupported()) {
+                    hls = new Hls({ debug: true });
+                    hls.loadSource(streamUrl);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        video.play().catch(error => {
+                            console.error('Uppspelning misslyckades:', error);
+                            channelNameElement.textContent = `${channelName} (Klicka play manuellt)`;
+                        });
                     });
-                });
-
-                player.on('error', () => {
-                    const error = player.error();
-                    console.error('Video.js-fel:', error);
-                    if (error && error.code === 4) {
-                        channelNameElement.textContent = `${channelName} (Fel: Stream inte tillgänglig)`;
-                    } else {
-                        channelNameElement.textContent = `${channelName} (Fel: Se konsolen)`;
-                    }
-                });
+                    hls.on(Hls.Events.ERROR, (event, data) => {
+                        console.error('HLS-fel:', data);
+                        if (data.fatal) {
+                            channelNameElement.textContent = `${channelName} (Fel: ${data.details})`;
+                            // Försök med alternativ proxy
+                            const altStreamUrl = streamUrl.replace('corsproxy.io/?', 'https://api.allorigins.win/raw?url=');
+                            console.log('Försöker alternativ proxy:', altStreamUrl);
+                            hls.loadSource(altStreamUrl);
+                            hls.attachMedia(video);
+                        }
+                    });
+                } else {
+                    video.src = streamUrl;
+                    video.load();
+                    video.play().catch(error => {
+                        console.error('Play-fel:', error);
+                        channelNameElement.textContent = `${channelName} (Starta manuellt)`;
+                    });
+                }
             }
         }
     </script>
