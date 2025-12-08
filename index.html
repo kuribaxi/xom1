@@ -1,59 +1,68 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XOM TV - Alla Iranska & Kurdiska Kanaler</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>XOM TV - Iranska och Kurdiska Kanaler</title>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
-  body {font-family:Arial,sans-serif;background:#1a1a2e;color:white;margin:0;padding:20px;line-height:1.6;}
-  .container {max-width:1400px;margin:auto;display:flex;gap:20px;flex-wrap:wrap;}
-  .header {text-align:center;padding:20px;background:rgba(255,255,255,0.1);border-radius:15px;width:100%;}
-  .header h1 {font-size:2.5em;color:#4ecdc4;margin:0;}
-  .channel-list {flex:1;min-width:300px;max-height:85vh;overflow-y:auto;background:rgba(0,0,0,0.2);padding:10px;border-radius:12px;}
-  .section {margin:20px 0;}
-  .section h2 {color:#4ecdc4;border-bottom:2px solid #4ecdc4;padding-bottom:8px;}
-  .subsection {margin-left:20px;}
-  .subsection h3 {color:#4ecdc4;font-size:1.2em;}
-  .channel {display:block;margin:8px 0;padding:12px 20px;background:#4ecdc4;color:#1a1a2e;border-radius:25px;font-weight:bold;cursor:pointer;position:relative;transition:0.3s;}
-  .channel:hover {background:#45b7aa;transform:translateY(-2px);}
-  .channel.active-channel {color:red;}
-  .fav-btn {position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.3em;cursor:pointer;}
-  .fav-btn.favorited {color:gold;text-shadow:0 0 8px gold;}
-  .player-section {flex:3;min-width:300px;text-align:center;background:rgba(0,0,0,0.3);border-radius:12px;padding:10px;}
-  .player-section iframe,.player-section video {width:100%;height:65vh;border-radius:12px;border:none;display:none;background:#000;}
-  .player-section iframe.active-player,.player-section video.active-player {display:block;}
-  .channel-name {font-size:2em;color:#4ecdc4;margin:15px 0;}
-  #favoritesSection {display:none;}
-  .favorites-list .favorite-item {padding:10px 15px;background:rgba(78,205,196,0.2);border-radius:18px;margin:5px 0;cursor:pointer;color:#4ecdc4;font-weight:bold;}
-  @media (max-width:900px){.container{flex-direction:column;}}
+  body { font-family: Arial, sans-serif; background: #1a1a2e; color: white; margin: 0; padding: 20px; line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; display: flex; gap: 20px; }
+  .header { text-align: center; margin-bottom: 30px; padding: 20px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; width: 100%; }
+  .header h1 { font-size: 2.5em; color: #4ecdc4; margin: 0; }
+  .header p { font-size: 1.2em; margin: 10px 0 0; }
+  .header .controls { margin-top: 10px; font-size: 0.95em; color: #ddd; }
+  .channel-list { flex: 1; min-width: 25%; max-width: 25%; overflow-y: auto; max-height: 80vh; }
+  .section { margin: 20px 0; }
+  .section h2 { color: #4ecdc4; border-bottom: 2px solid #4ecdc4; padding-bottom: 10px; font-size: 1.5em; }
+  .subsection { margin-left: 15px; }
+  .subsection h3 { color: #4ecdc4; font-size: 1.2em; margin: 10px 0; }
+  .channel { display: block; margin: 8px 0; padding: 12px 20px; background: #4ecdc4; color: #1a1a2e; border-radius: 25px; text-decoration: none; font-weight: bold; cursor: pointer; transition: background 0.3s, transform 0.3s; position: relative; }
+  .channel:hover { background: #45b7aa; transform: translateY(-2px); }
+  .channel.active-channel { color: red; }
+  .fav-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 1.1em; cursor: pointer; color: rgba(0,0,0,0.6); padding: 0; line-height: 1; }
+  .fav-btn.favorited { color: gold; text-shadow: 0 0 6px rgba(255,215,0,0.6); }
+  .player-section { flex: 3; min-width: 75%; max-width: 75%; text-align: center; }
+  .player-section video { width: 100%; max-width: 100%; border-radius: 10px; display: none; }
+  .player-section video.active-player { display: block; }
+  .player-section iframe { width: 100%; max-width: 100%; border-radius: 10px; height: 400px; border: none; display: none; }
+  .player-section iframe.active-player { display: block; }
+  .channel-name { font-size: 2em; color: #4ecdc4; margin: 10px 0; }
+  .warning { color: #ff6666; font-size: 0.9em; margin-top: 10px; }
+  .favorites-list { display: flex; flex-direction: column; gap: 8px; }
+  .favorite-item { padding: 10px 14px; background: rgba(78,205,196,0.15); border-radius: 18px; cursor: pointer; color: #4ecdc4; font-weight: bold; }
+  .favorite-item:hover { background: rgba(78,205,196,0.25); }
+  @media (max-width: 600px) { .container { flex-direction: column; } .channel-list, .player-section { max-width: 100%; min-width: 100%; } .header h1 { font-size: 1.8em; } .channel-name { font-size: 1.5em; } .player-section video, .player-section iframe { height: 300px; } }
 </style>
 </head>
 <body>
-
 <div class="container">
   <div class="header">
-    <h1>XOM TV</h1>
-    <p>Alla Iranska & Kurdiska kanaler – fullt fungerande december 2025</p>
-    <div style="margin-top:10px;">
-      <label><input type="checkbox" id="onlyFavCheckbox"> Visa endast favoriter</label>
-      <span style="margin-left:10px;color:#ccc;">(stjärna = favorit)</span>
+    <h1>📺 XOM TV</h1>
+    <p>Iranska och Kurdiska TV-kanaler • Klicka för att titta</p>
+    <p class="warning">Karwan.tv-kanaler öppnas nu med direkta streams i spelaren med 600 zoom. Övriga öppnas i nytt fönster om nödvändigt.</p>
+    <div class="controls">
+      <label style="cursor:pointer;"><input type="checkbox" id="onlyFavCheckbox"> Visa endast favoriter</label>
+      <span style="margin-left:10px; color:#ccc;">(Klicka på stjärnan för att lägga till/taga bort favorit)</span>
     </div>
   </div>
 
   <div class="channel-list">
-    <div class="section" id="favoritesSection"><h2>Favoriter</h2><div id="favoritesList" class="favorites-list"></div></div>
+    <div class="section" id="favoritesSection" style="display:none;">
+      <h2>💚 Favoriter</h2>
+      <div id="favoritesList" class="favorites-list"></div>
+    </div>
 
-    <!-- IRANSKA NATIONELLA KANALER -->
     <div class="section">
-      <h2>Iranska Nationella Kanaler</h2>
+      <h2>⭐ Iranska Kanaler</h2>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/tv1/vs1/out.m3u8?md5=SFGouWt8gfnx9A_AjxkRBA&expires=1765307306" data-name="TV1" onclick="playChannel(this)">TV1</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/tv2/vs1/out.m3u8?md5=_jLSTIXcfe4_OtejSYRiKg&expires=1765309579" data-name="TV2" onclick="playChannel(this)">TV2</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/tv3/vs1/out.m3u8?md5=A4DPfkzabiK0XQYYx4jCjA&expires=1765309624" data-name="TV3" onclick="playChannel(this)">TV3</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/tv4/vs1/out.m3u8?md5=AdV0I-JKbz6a9QSv0gLKaw&expires=1765309683" data-name="TV4" onclick="playChannel(this)">TV4</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/tv5/vs1/out.m3u8?md5=YH-kZswga5OENJxqgsQfHw&expires=1765309745" data-name="TV5" onclick="playChannel(this)">TV5</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/nasim/vs1/out.m3u8?md5=AiHAPP1XQ5AxQma6Qpjh9A&expires=1765309722" data-name="NASIM" onclick="playChannel(this)">NASIM</div>
-      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/irinn/vs1/out.m3u8?md5=UBuZ6VvvVgUW9l9It13qrA&expires=1765309734" data-name="IRINN" onclick="playChannel(this)">IRINN</div>
+      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/irinn/vs1/out.m3u8?md5=UBuZ6VvvVgUW9l9It13qrA&expires=1765309734" data-name="KHABAR1" onclick="playChannel(this)">KHABAR1</div>
+      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/irinn2/vs1/out.m3u8?md5=6sDyyUwLkgomyMmiRzXVCA&expires=1765309729" data-name="KHABAR2" onclick="playChannel(this)">KHABAR2</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/varzesh/vs1/out.m3u8?md5=56F8xc_sMRAIo9NbBa0snA&expires=1765309740" data-name="VARZESH" onclick="playChannel(this)">VARZESH</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/pouya/vs1/out.m3u8?md5=FQbsmwM1JB4JYsgzM5ZHkg&expires=1765309751" data-name="POUYA" onclick="playChannel(this)">POUYA</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/omid/vs1/out.m3u8?md5=rEBR5b0BCLrNXi4Z4dALzw&expires=1765309755" data-name="OMID" onclick="playChannel(this)">OMID</div>
@@ -64,152 +73,480 @@
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/amozesh/vs1/out.m3u8?md5=jplgfPR3QCWXZJnOSbwbjw&expires=1765309784" data-name="AMOZESH" onclick="playChannel(this)">AMOZESH</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/salamat/vs1/out.m3u8?md5=H6GsR6YakQvBbD0fqcCPcA&expires=1765309790" data-name="SALAMAT" onclick="playChannel(this)">SALAMAT</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/ofogh/vs1/out.m3u8?md5=JWv35NYEGtitR_mA0epZFw&expires=1765309797" data-name="OFOGH" onclick="playChannel(this)">OFOGH</div>
-      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/quran/vs1/out.m3u8?md5=9yJx8WCLe8JhW8ag0eJ6Xg&expires=1765309805" data-name="QURAN TV" onclick="playChannel(this)">QURAN TV</div>
+      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/quran/vs1/out.m3u8?md5=9yJx8WCLe8JhW8ag0eJ6Xg&expires=1765309805" data-name="QURAN" onclick="playChannel(this)">QURAN</div>
+      <div class="channel" data-iframe="https://www.parsatv.com/name=Mahabad" data-name="MAHABAD" data-kurdish="true" onclick="playChannel(this)">MAHABAD</div>
+      <div class="channel" data-iframe="https://telewebion.com/live/javaneh" data-name="KOODAK+" data-kurdish="true" onclick="playChannel(this)">KOODAK+</div>
+      <div class="channel" data-stream="https://karwan.tv/" data-name="TEST" data-kurdish="true" data-redirect="true" onclick="playChannel(this)">TEST</div>
     </div>
 
-    <!-- REGIONALA KANALER -->
     <div class="section">
-      <h2>Regionala Kanaler</h2>
+      <h2>🏙️ Regionala Kanaler</h2>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/alborz/vs1/out.m3u8?md5=xRJbGIy3kaXWYB4MMrY5HA&expires=1765309818" data-name="ALBORZ" onclick="playChannel(this)">ALBORZ</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/rasht/vs1/out.m3u8?md5=4YVwJ4sVyp93-i4Rhi_QnA&expires=1765309826" data-name="RASHT" onclick="playChannel(this)">RASHT</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/mazandaran/vs1/out.m3u8?md5=czEHWSCdQSiqJ78y6pEoEA&expires=1765309834" data-name="MAZANDARAN" onclick="playChannel(this)">MAZANDARAN</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/tabriz/vs1/out.m3u8?md5=zqEgM-JQ4PSvsQs8CnEAoQ&expires=1765309841" data-name="TABRIZ" onclick="playChannel(this)">TABRIZ</div>
-      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/booshehr/vs1/out.m3u8?md5=NvmPfCF8WDzc9OgBAsO7nQ&expires=1765309850" data-name="BOOSHEHR" onclick="playChannel(this)">BOOSHEHR</div>
+      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/booshehr/vs1/out.m3u8?md5=NvmPfCF8WDzc9OgBAsO7nQ&expires=1765309850" data-name="BOSHEHR" onclick="playChannel(this)">BOSHEHR</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/ahvaz/vs1/out.m3u8?md5=iKQYuALZDPTkikKTcIK9Hw&expires=1765309857" data-name="AHVAZ" onclick="playChannel(this)">AHVAZ</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/bandarabas/vs1/out.m3u8?md5=bfOdzeFMXPZtr2m6tg5RUg&expires=1765309865" data-name="BANDARABBAS" onclick="playChannel(this)">BANDARABBAS</div>
-      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/esfehan/vs1/out.m3u8?md5=VEdOJFLPxRPEet-XGd2_Zg&expires=1765309871" data-name="ESFEHAN" onclick="playChannel(this)">ESFEHAN</div>
+      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/esfehan/vs1/out.m3u8?md5=VEdOJFLPxRPEet-XGd2_Zg&expires=1765309871" data-name="ESFFAHAN" onclick="playChannel(this)">ESFFAHAN</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/kordestan/vs1/out.m3u8?md5=G8WIQ3NNjXXurzviJDau6g&expires=1765309882" data-name="KORDESTAN" onclick="playChannel(this)">KORDESTAN</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/markazi/vs1/out.m3u8?md5=eSFfKzMITnhSI-813WCEPA&expires=1765309890" data-name="MARKAZI" onclick="playChannel(this)">MARKAZI</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/khorasaneshomali/vs1/out.m3u8?md5=z-I9bn-vno3ADwRfP1vr3g&expires=1765309898" data-name="KHORASAN SHOMALI" onclick="playChannel(this)">KHORASAN SHOMALI</div>
-      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/khorasanejonoobi/vs1/out.m3u8?md5=D-4OfZGpR6FWsEaH3xk7aw&expires=1765309909" data-name="KHORASAN JONOOBI" onclick="playChannel(this)">KHORASAN JONOOBI</div>
+      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/khorasanejonoobi/vs1/out.m3u8?md5=D-4OfZGpR6FWsEaH3xk7aw&expires=1765309909" data-name="KHORASAN GONOBI" onclick="playChannel(this)">KHORASAN GONOBI</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/yazd/vs1/out.m3u8?md5=Manqxfn3QFqqKNylXqrrKA&expires=1765309917" data-name="YAZD" onclick="playChannel(this)">YAZD</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/ardabil/vs1/out.m3u8?md5=9Lzjbogy7rMHI_ehKrAvzw&expires=1765309931" data-name="ARDABIL" onclick="playChannel(this)">ARDABIL</div>
+      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/jahanbin/vs1/out.m3u8?md5=IXwjn_iHU5r2FyN7-SVuCQ&expires=1765309939" data-name="SHAHREKORD" onclick="playChannel(this)">SHAHREKORD</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/yasooj/vs1/out.m3u8?md5=JbE8VBc7xAr1OC87PoxRKQ&expires=1765309947" data-name="YASOOJ" onclick="playChannel(this)">YASOOJ</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/zahedan/vs1/out.m3u8?md5=qFUrWLGB7deR-BYx8zadAQ&expires=1765309957" data-name="ZAHEDAN" onclick="playChannel(this)">ZAHEDAN</div>
-      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/qazvin/vs1/out.m3u8?md5=_vM9LoHVaOQGLUQY9D9wOQ&expires=1765309976" data-name="QAZVIN" onclick="playChannel(this)">QAZVIN</div>
+      <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/qazvin/vs1/out.m3u8?md5=0kYkttjyGyLZOUqHh9O6pg&expires=1765309965" data-name="QAZVIN" onclick="playChannel(this)">QAZVIN</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/semnan/vs1/out.m3u8?md5=KPhz7mZ66fmyAw_kS-DnfQ&expires=1765309986" data-name="SEMNAN" onclick="playChannel(this)">SEMNAN</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/fars/vs1/out.m3u8?md5=LUzVpZeIIL4gOLE76s0Q7w&expires=1765310001" data-name="FARS" onclick="playChannel(this)">FARS</div>
       <div class="channel" data-stream="https://fam1.fam.ir/igaptv/lives/qom/vs1/out.m3u8?md5=GytAd1btM9R5oiGO0w7-Lg&expires=1765310026" data-name="QOM" onclick="playChannel(this)">QOM</div>
     </div>
 
-    <!-- SÄRSKILDA KANALER -->
     <div class="section">
-      <h2>Särskilda Kanaler</h2>
-      <div class="channel" data-iframe="https://www.parsatv.com/name=Mahabad" data-name="MAHABAD" data-kurdish="true" onclick="playChannel(this)">MAHABAD</div>
-      <div class="channel" data-iframe="https://telewebion.com/live/javaneh" data-name="KOODAK+" data-kurdish="true" onclick="playChannel(this)">KOODAK+</div>
-      <div class="channel" data-stream="https://karwan.tv/" data-name="TEST" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">TEST</div>
-    </div>
-
-    <!-- ALLA KURDISKA KANALER – EXAKT SOM DU HADE DEM TIDIGARE -->
-    <div class="section">
-      <h2>Kurdiska Kanaler</h2>
-
-      <div class="subsection"><h3>Nyheter</h3>
+      <h2>🎥 Kurdiska Kanaler</h2>
+      <div class="subsection">
+        <h3>Nyheter</h3>
         <div class="channel" data-stream="https://5a3ed7a72ed4b.streamlock.net/zagrostv/SMIL:myStream.smil/playlist.m3u8" data-name="Zagros" data-kurdish="true" onclick="playChannel(this)">Zagros</div>
         <div class="channel" data-stream="https://live.channel8.com/Channel8-Kurdish/index.fmp4.m3u8" data-name="Kanal8" data-kurdish="true" onclick="playChannel(this)">Kanal8</div>
         <div class="channel" data-stream="https://svs.itworkscdn.net/rudawlive/rudawlive.smil/playlist.m3u8" data-name="Rudaw" data-kurdish="true" onclick="playChannel(this)">Rudaw</div>
         <div class="channel" data-stream="https://hlspackager.akamaized.net/live/DB/KURDSAT_NEWS/HLS/KURDSAT_NEWS-avc1_1500000=10001.m3u8" data-name="Kurdsat News" data-kurdish="true" onclick="playChannel(this)">Kurdsat News</div>
         <div class="channel" data-stream="https://5dab1db4b25fe.streamlock.net/sterk/sterktv/chunklist_w1084077249.m3u8" data-name="Sterk" data-kurdish="true" onclick="playChannel(this)">Sterk</div>
         <div class="channel" data-stream="https://media.streambrothers.com:1936/8226/8226/playlist.m3u8" data-name="NRT News" data-kurdish="true" onclick="playChannel(this)">NRT News</div>
-        <div class="channel" data-stream="https://karwan.tv/kurdistan24-tv.html" data-name="Karwan Kurdistan24" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kurdistan24</div>
-        <div class="channel" data-stream="https://karwan.tv/rudaw-tv.html" data-name="Karwan Rudaw" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Rudaw</div>
-        <!-- ... alla andra karwan-länkar har data-karwan="true" ... -->
+        <div class="channel" data-stream="https://www.kurdistan24.net/ckb/live" data-name="Karwan Kurdistan24" data-kurdish="true" data-redirect="true" onclick="playChannel(this)">Karwan Kurdistan24</div>
+        <div class="channel" data-stream="https://news.kurdsat.tv/en/watch-live?zx=1760474096211&no_sw_cr=1" data-name="Karwan Kurdsat News TV" data-kurdish="true" data-redirect="true" onclick="playChannel(this)">Karwan Kurdsat News TV</div>
+        <div class="channel" data-stream="https://karwan.tv/mmn-news.html" data-name="Karwan Mmn News" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mmn News</div>
+        <div class="channel" data-stream="https://karwan.tv/shams-tv.html" data-name="Karwan Shams TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Shams TV</div>
+        <div class="channel" data-stream="https://svs.itworkscdn.net/rudawlive/rudawlive.smil/playlist.m3u8" data-name="Karwan Rudaw TV" data-kurdish="true" onclick="playChannel(this)">Karwan Rudaw TV</div>
+        <div class="channel" data-stream="https://live.channel8.com/Channel8-Kurdish/index.fmp4.m3u8" data-name="Karwan Channel 8" data-kurdish="true" onclick="playChannel(this)">Karwan Channel 8</div>
+        <div class="channel" data-stream="https://karwan.tv/cpi-tv.html" data-name="Karwan CPI TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan CPI TV</div>
+        <div class="channel" data-stream="https://karwan.tv/duhok-tv.html" data-name="Karwan Duhok TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Duhok TV</div>
+        <div class="channel" data-stream="https://karwan.tv/geli-kurdistan-tv.html" data-name="Karwan Geli Kurdistan TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Geli Kurdistan TV</div>
+        <div class="channel" data-stream="https://karwan.tv/kurdistan24-tv.html" data-name="Karwan Kurdistan24 TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kurdistan24 TV</div>
+        <div class="channel" data-stream="https://prxy-wza-02.iptv-playoutcenter.de/nrt1/nrt1.stream_1/chunklist_w76649285.m3u8" data-name="Karwan Nalia TV" data-kurdish="true" onclick="playChannel(this)">Karwan Nalia TV</div>
+        <div class="channel" data-stream="https://karwan.tv/rojhelat-tv.html" data-name="Karwan Rojhelat TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Rojhelat TV</div>
+        <div class="channel" data-stream="https://karwan.tv/slemani-tv.html" data-name="Karwan Slemani TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Slemani TV</div>
+        <div class="channel" data-stream="https://karwan.tv/xabir-tv.html" data-name="Karwan Xabir TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Xabir TV</div>
+        <div class="channel" data-stream="rtmp://84.244.187.12/live/livestream" data-name="Karwan Kurdistan TV" data-kurdish="true" onclick="playChannel(this)">Karwan Kurdistan TV</div>
       </div>
 
-      <!-- Alla dina övriga kategorier: Musik, Underhållning, Barn, Film, Quran, etc. – exakt som i din ursprungliga fil -->
-      <!-- Jag har lagt till data-karwan="true" på ALLA karwan.tv-länkar så att de zoomas perfekt -->
-      <!-- Platsbrist här i meddelandet, men de finns med i den faktiska filen jag skickar dig nu -->
+      <div class="subsection">
+        <h3>Musik</h3>
+        <div class="channel" data-stream="https://4kuhls.persiana.live/hls/stream.m3u8" data-name="4 Kurd" data-kurdish="true" onclick="playChannel(this)">4 Kurd</div>
+        <div class="channel" data-stream="http://54.36.110.140/live3/live3.m3u8" data-name="Med Music" data-kurdish="true" onclick="playChannel(this)">Med Music</div>
+        <div class="channel" data-stream="https://karwan.tv/med-muzik-tv.html" data-name="Karwan Med Muzik TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Med Muzik TV</div>
+        <div class="channel" data-stream="https://karwan.tv/mmn-clip.html" data-name="Karwan Mmn Clip" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mmn Clip</div>
+        <div class="channel" data-stream="https://karwan.tv/graryan-tv.html" data-name="Karwan Graryan TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Graryan TV</div>
+        <div class="channel" data-stream="https://karwan.tv/kurd-7.html" data-name="Karwan Kurd 7" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kurd 7</div>
+        <div class="channel" data-stream="https://karwan.tv/4-kurd-tv.html" data-name="Karwan 4 Kurd TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan 4 Kurd TV</div>
+        <div class="channel" data-stream="https://karwan.tv/bnar-tv.html" data-name="Karwan Bnar TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Bnar TV</div>
+        <div class="channel" data-stream="https://karwan.tv/kurdmax-music.html" data-name="Karwan Kurdmax Music" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kurdmax Music</div>
+        <div class="channel" data-stream="https://karwan.tv/walla-tv.html" data-name="Karwan Walla TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Walla TV</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Underhållning</h3>
+        <div class="channel" data-stream="https://stream.aryen.tv/live/tv/chunklist_w189856026.m3u8" data-name="Aryen" data-kurdish="true" onclick="playChannel(this)">Aryen</div>
+        <div class="channel" data-stream="https://cira-tv.akamaized.net/hls/stream_0.m3u8" data-name="Cira" data-kurdish="true" onclick="playChannel(this)">Cira</div>
+        <div class="channel" data-stream="https://live.kwikmotion.com/waarmedialive/waarmedia.smil/waarmediapublish/waarmedia_source/chunks.m3u8" data-name="Waar" data-kurdish="true" onclick="playChannel(this)">Waar</div>
+        <div class="channel" data-stream="https://rojava-tv.akamaized.net/hls/rojava-tv.m3u8" data-name="Rojava" data-kurdish="true" onclick="playChannel(this)">Rojava</div>
+        <div class="channel" data-stream="https://hlspackager.akamaized.net/live/DB/KURDSAT_HD/HLS/KURDSAT_HD.m3u8" data-name="Kurdsat HD" data-kurdish="true" onclick="playChannel(this)">Kurdsat HD</div>
+        <div class="channel" data-stream="https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8" data-name="Kurdistan TV" data-kurdish="true" onclick="playChannel(this)">Kurdistan TV</div>
+        <div class="channel" data-stream="https://cdn.northtelecom.org/KurdChannel.m3u8" data-name="PDKI" data-kurdish="true" onclick="playChannel(this)">PDKI</div>
+        <div class="channel" data-stream="https://karwan.tv/kurd-channel.html" data-name="Karwan Kurd Channel" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kurd Channel</div>
+        <div class="channel" data-stream="https://live.tvkomala.com/live/komala/playlist.m3u8" data-name="Komala" data-kurdish="true" onclick="playChannel(this)">Komala</div>
+        <div class="channel" data-stream="https://karwan.tv/cpi-tv.html" data-name="Karwan CPI TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan CPI TV</div>
+        <div class="channel" data-stream="https://live.host247.net/gk/gksat/playlist.m3u8" data-name="GK" data-kurdish="true" onclick="playChannel(this)">GK</div>
+        <div class="channel" data-stream="https://lenz.splus.ir/PLTV/88888888/224/3221226647/index.m3u8" data-name="IRIB Kurdistan" data-kurdish="true" onclick="playChannel(this)">IRIB Kurdistan</div>
+        <div class="channel" data-stream="https://kurdish.sahartv.ir/live" data-name="Sahar" data-kurdish="true" data-redirect="true" onclick="playChannel(this)">Sahar</div>
+        <div class="channel" data-stream="https://www.ava.news/livewatch?zx=1760476463185&no_sw_cr=1" data-name="Ava TV" data-kurdish="true" data-redirect="true" onclick="playChannel(this)">Ava TV</div>
+        <div class="channel" data-stream="https://utvhawler.net/index.htm" data-name="UTV Hawler" data-kurdish="true" data-redirect="true" onclick="playChannel(this)">UTV Hawler</div>
+        <div class="channel" data-stream="http://198.100.158.231:1935/kanal2/_definst_/livestream/playlist.m3u8" data-name="Karwan Waar TV" data-kurdish="true" onclick="playChannel(this)">Karwan Waar TV</div>
+        <div class="channel" data-stream="https://rojava-tv.akamaized.net/hls/rojava-tv.m3u8" data-name="Karwan Rojava TV" data-kurdish="true" onclick="playChannel(this)">Karwan Rojava TV</div>
+        <div class="channel" data-stream="http://198.100.158.231:1935/kanal16/_definst_/livestream/list.m3u8" data-name="Karwan Ronahi TV" data-kurdish="true" onclick="playChannel(this)">Karwan Ronahi TV</div>
+        <div class="channel" data-stream="https://karwan.tv/ava-tv.html" data-name="Karwan Ava TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Ava TV</div>
+        <div class="channel" data-stream="https://karwan.tv/utv-hawler.html" data-name="Karwan UTV Hawler" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan UTV Hawler</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Barn</h3>
+        <div class="channel" data-stream="https://5dcabf026b188.streamlock.net/afarinTV/livestream/playlist.m3u8" data-name="Baxche" data-kurdish="true" onclick="playChannel(this)">Baxche</div>
+        <div class="channel" data-stream="https://65f16f0fdfc51.streamlock.net/afarinTV/livestream/playlist.m3u8" data-name="Afarin Kids" data-kurdish="true" onclick="playChannel(this)">Afarin Kids</div>
+        <div class="channel" data-stream="https://zindikurmanci.zaroktv.com.tr/hls/0/stream.m3u8" data-name="Zarok Kurmanci" data-kurdish="true" onclick="playChannel(this)">Zarok Kurmanci</div>
+        <div class="channel" data-stream="https://zindisorani.zaroktv.com.tr/hls/stream.m3u8" data-name="Zarok Sorani" data-kurdish="true" onclick="playChannel(this)">Zarok Sorani</div>
+        <div class="channel" data-stream="https://karwan.tv/kidco-tv.html" data-name="Karwan Kidco TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kidco TV</div>
+        <div class="channel" data-stream="https://karwan.tv/mmn-kids.html" data-name="Karwan Mmn Kids" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mmn Kids</div>
+        <div class="channel" data-stream="https://karwan.tv/nrt-3-kids.html" data-name="Karwan Nrt 3 Kids" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Nrt 3 Kids</div>
+        <div class="channel" data-stream="https://karwan.tv/afarin-baxcha.html" data-name="Karwan Afarin Baxcha" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Afarin Baxcha</div>
+        <div class="channel" data-stream="https://karwan.tv/astera-baby.html" data-name="Karwan Astera Baby" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Astera Baby</div>
+        <div class="channel" data-stream="https://karwan.tv/jojo-mama.html" data-name="Karwan Jojo Mama" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Jojo Mama</div>
+        <div class="channel" data-stream="https://karwan.tv/gewher-kids.html" data-name="Karwan Gewher Kids" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Gewher Kids</div>
+        <div class="channel" data-stream="https://zindikurmanci.zaroktv.com.tr/hls/stream.m3u8" data-name="Karwan Zarok TV" data-kurdish="true" onclick="playChannel(this)">Karwan Zarok TV</div>
+        <div class="channel" data-stream="https://karwan.tv/kurdmax-pepule.html" data-name="Karwan Kurdmax Pepule" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kurdmax Pepule</div>
+        <div class="channel" data-stream="https://karwan.tv/barin-family.html" data-name="Karwan Barin Family" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Barin Family</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Film</h3>
+        <div class="channel" data-stream="https://karwan.tv/astera-movies.html" data-name="Karwan Astera Movies" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Astera Movies</div>
+        <div class="channel" data-stream="https://karwan.tv/barin-movies.html" data-name="Karwan Barin Movies" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Barin Movies</div>
+        <div class="channel" data-stream="https://karwan.tv/bnar-action.html" data-name="Karwan Bnar Action" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Bnar Action</div>
+        <div class="channel" data-stream="rtmp://kurd-live.com/live/cihan" data-name="Karwan Cihan TV" data-kurdish="true" onclick="playChannel(this)">Karwan Cihan TV</div>
+        <div class="channel" data-stream="https://karwan.tv/delal-tv.html" data-name="Karwan Delal TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Delal TV</div>
+        <div class="channel" data-stream="https://karwan.tv/mix-tv.html" data-name="Karwan Mix TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mix TV</div>
+        <div class="channel" data-stream="https://karwan.tv/mmn-drama.html" data-name="Karwan Mmn Drama" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mmn Drama</div>
+        <div class="channel" data-stream="https://karwan.tv/mmn-movies.html" data-name="Karwan Mmn Movies" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mmn Movies</div>
+        <div class="channel" data-stream="https://karwan.tv/mmn-show.html" data-name="Karwan Mmn Show" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mmn Show</div>
+        <div class="channel" data-stream="https://prxy-wza-02.iptv-playoutcenter.de/nrt2/nrt2.stream_1/chunklist_w1757825996.m3u8" data-name="Karwan Nalia TV 2" data-kurdish="true" onclick="playChannel(this)">Karwan Nalia TV 2</div>
+        <div class="channel" data-stream="https://karwan.tv/qallam-tv.html" data-name="Karwan Qallam TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Qallam TV</div>
+        <div class="channel" data-stream="https://karwan.tv/newline-tv-2.html" data-name="Karwan Newline TV 2" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Newline TV 2</div>
+        <div class="channel" data-stream="https://karwan.tv/soz-tv.html" data-name="Karwan Soz TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Soz TV</div>
+        <div class="channel" data-stream="https://karwan.tv/zed-tv-plus.html" data-name="Karwan Zed TV Plus" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Zed TV Plus</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Quran</h3>
+        <div class="channel" data-stream="https://karwan.tv/nrt-4.html" data-name="Karwan NRT 4" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan NRT 4</div>
+        <div class="channel" data-stream="https://karwan.tv/bask-tv.html" data-name="Karwan Bask TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Bask TV</div>
+        <div class="channel" data-stream="https://karwan.tv/amozhgary-tv.html" data-name="Karwan Amozhgary TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Amozhgary TV</div>
+        <div class="channel" data-stream="https://karwan.tv/ashna-quran.html" data-name="Karwan Ashna Quran" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Ashna Quran</div>
+        <div class="channel" data-stream="https://karwan.tv/ashti-family.html" data-name="Karwan Ashti Family" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Ashti Family</div>
+        <div class="channel" data-stream="https://karwan.tv/ashti-tv.html" data-name="Karwan Ashti TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Ashti TV</div>
+        <div class="channel" data-stream="https://karwan.tv/baboly-tv.html" data-name="Karwan Baboly TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Baboly TV</div>
+        <div class="channel" data-stream="https://karwan.tv/bangawaz-tv.html" data-name="Karwan Bangawaz" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Bangawaz</div>
+        <div class="channel" data-stream="https://karwan.tv/bangxwazen-badinan-tv.html" data-name="Karwan Bangxwazen Badinan TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Bangxwazen Badinan TV</div>
+        <div class="channel" data-stream="https://karwan.tv/barin-quran.html" data-name="Karwan Barin Quran" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Barin Quran</div>
+        <div class="channel" data-stream="https://karwan.tv/eman-tv.html" data-name="Karwan Eman TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Eman TV</div>
+        <div class="channel" data-stream="https://karwan.tv/farmoda-tv.html" data-name="Karwan Farmoda TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Farmoda TV</div>
+        <div class="channel" data-stream="https://karwan.tv/imk-quran.html" data-name="Karwan IMK Quran" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan IMK Quran</div>
+        <div class="channel" data-stream="https://karwan.tv/kani-tv.html" data-name="Karwan Kani TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kani TV</div>
+        <div class="channel" data-stream="https://karwan.tv/mihrab-tv.html" data-name="Karwan Mihrab TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mihrab TV</div>
+        <div class="channel" data-stream="https://karwan.tv/mmn-quran-tv.html" data-name="Karwan Mmn Quran TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mmn Quran TV</div>
+        <div class="channel" data-stream="https://karwan.tv/naqshi-media.html" data-name="Karwan Naqshi Media" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Naqshi Media</div>
+        <div class="channel" data-stream="https://karwan.tv/payam-tv.html" data-name="Karwan Payam TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Payam TV</div>
+        <div class="channel" data-stream="https://karwan.tv/sada-tv.html" data-name="Karwan Sada TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Sada TV</div>
+        <div class="channel" data-stream="https://karwan.tv/shar-quran.html" data-name="Karwan Shar Quran" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Shar Quran</div>
+        <div class="channel" data-stream="https://karwan.tv/shna-quran.html" data-name="Karwan Shna Quran" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Shna Quran</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Kultur</h3>
+        <div class="channel" data-stream="https://karwan.tv/ala-tv.html" data-name="Karwan ALA" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan ALA</div>
+        <div class="channel" data-stream="https://karwan.tv/astera-culture.html" data-name="Karwan Astera Culture" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Astera Culture</div>
+        <div class="channel" data-stream="https://cira-tv.akamaized.net/hls/stream_0.m3u8" data-name="Karwan Cira TV" data-kurdish="true" onclick="playChannel(this)">Karwan Cira TV</div>
+        <div class="channel" data-stream="https://karwan.tv/dever-tv.html" data-name="Karwan Dever TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Dever TV</div>
+        <div class="channel" data-stream="https://karwan.tv/dimen-tv.html" data-name="Karwan Dimen TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Dimen TV</div>
+        <div class="channel" data-stream="https://karwan.tv/euro-kurd-tv.html" data-name="Karwan Euro Kurd TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Euro Kurd TV</div>
+        <div class="channel" data-stream="https://karwan.tv/jamawar-tv.html" data-name="Karwan Jamawar TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Jamawar TV</div>
+        <div class="channel" data-stream="https://karwan.tv/kurdana-tv.html" data-name="Karwan Kurdana TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kurdana TV</div>
+        <div class="channel" data-stream="https://karwan.tv/rasan-tv.html" data-name="Karwan Rasan TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Rasan TV</div>
+        <div class="channel" data-stream="https://karwan.tv/rozh-tv.html" data-name="Karwan Rozh TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Rozh TV</div>
+        <div class="channel" data-stream="https://karwan.tv/shar-tv.html" data-name="Karwan Shar TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Shar TV</div>
+        <div class="channel" data-stream="https://karwan.tv/shna-tv.html" data-name="Karwan Shna TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Shna TV</div>
+        <div class="channel" data-stream="https://karwan.tv/sima-tv.html" data-name="Karwan Sima TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Sima TV</div>
+        <div class="channel" data-stream="https://karwan.tv/srusht-tv.html" data-name="Karwan Srusht TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Srusht TV</div>
+        <div class="channel" data-stream="https://karwan.tv/utv-duhok.html" data-name="Karwan UTV Duhok" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan UTV Duhok</div>
+        <div class="channel" data-stream="https://karwan.tv/zaxo-tv.html" data-name="Karwan Zaxo TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Zaxo TV</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Serial</h3>
+        <div class="channel" data-stream="https://karwan.tv/astera-family.html" data-name="Karwan Astera Family" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Astera Family</div>
+        <div class="channel" data-stream="https://karwan.tv/astera-show.html" data-name="Karwan Astera Show" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Astera Show</div>
+        <div class="channel" data-stream="https://karwan.tv/bmc-tv.html" data-name="Karwan BMC TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan BMC TV</div>
+        <div class="channel" data-stream="https://karwan.tv/derwaze-tv.html" data-name="Karwan Derwaze TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Derwaze TV</div>
+        <div class="channel" data-stream="https://karwan.tv/kurdmax-show-tv.html" data-name="Karwan Kurdmax Show TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Kurdmax Show TV</div>
+        <div class="channel" data-stream="rtmp://live.kurdstream.net:1935/liveTrans/_definst_/mp4:myStream_720p" data-name="Karwan Kurdmax TV" data-kurdish="true" onclick="playChannel(this)">Karwan Kurdmax TV</div>
+        <div class="channel" data-stream="https://karwan.tv/newline-tv.html" data-name="Karwan Newline TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Newline TV</div>
+        <div class="channel" data-stream="https://karwan.tv/ranya-tv.html" data-name="Karwan Ranya TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Ranya TV</div>
+        <div class="channel" data-stream="https://karwan.tv/reng-tv.html" data-name="Karwan Reng TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Reng TV</div>
+        <div class="channel" data-stream="http://kurd-live.com:1935/live/speda/playlist.m3u8" data-name="Karwan Speda Drama" data-kurdish="true" onclick="playChannel(this)">Karwan Speda Drama</div>
+        <div class="channel" data-stream="https://karwan.tv/zed-tv.html" data-name="Karwan Zed TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Zed TV</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Dokumentär</h3>
+        <div class="channel" data-stream="https://karwan.tv/znar-tv.html" data-name="Karwan Znar TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Znar TV</div>
+        <div class="channel" data-stream="https://karwan.tv/zhyar-tv.html" data-name="Karwan Zhyar TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Zhyar TV</div>
+        <div class="channel" data-stream="https://karwan.tv/astera-documentary.html" data-name="Karwan Astera Documentary" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Astera Documentary</div>
+        <div class="channel" data-stream="https://karwan.tv/minara-tv.html" data-name="Karwan Minara TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Minara TV</div>
+        <div class="channel" data-stream="https://karwan.tv/mmn-documentary.html" data-name="Karwan Mmn Documentary" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Mmn Documentary</div>
+        <div class="channel" data-stream="https://karwan.tv/reng-documentary.html" data-name="Karwan Reng Documentary" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Reng Documentary</div>
+        <div class="channel" data-stream="https://karwan.tv/shaista-tv.html" data-name="Karwan Shaista TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Shaista TV</div>
+        <div class="channel" data-stream="https://karwan.tv/soran-entertainment-tv.html" data-name="Karwan Soran Entertainment TV" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Soran Entertainment TV</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Utbildning</h3>
+        <div class="channel" data-stream="https://karwan.tv/parwarday-tv-duhok.html" data-name="Karwan Parwarday TV Duhok" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Parwarday TV Duhok</div>
+        <div class="channel" data-stream="https://karwan.tv/parwarday-tv-hawler.html" data-name="Karwan Parwarday TV Hawler" data-kurdish="true" data-karwan="true" onclick="playChannel(this)">Karwan Parwarday TV Hawler</div>
+      </div>
     </div>
   </div>
 
   <div class="player-section">
     <h1 class="channel-name" id="channelName">Välj en kanal</h1>
-    <video id="mainPlayer" controls></video>
-    <video id="kurdishPlayer" controls></video>
-    <iframe id="iframePlayer" allow="fullscreen"></iframe>
+    <div id="player-container">
+      <video id="player" controls></video>
+      <video id="kurdishPlayer" controls></video>
+      <iframe id="iframePlayer" allowFullscreen></iframe>
+    </div>
   </div>
 </div>
-
 <script>
-// Full JavaScript med perfekt karwan-zoom
-const iframePlayer = document.getElementById('iframePlayer');
-const mainPlayer = document.getElementById('mainPlayer');
-const kurdishPlayer = document.getElementById('kurdishPlayer');
-const channelNameElement = document.getElementById('channelName');
-let hlsMain = null, hlsKurdish = null;
+  const mainPlayer = document.getElementById('player');
+  const kurdishPlayer = document.getElementById('kurdishPlayer');
+  const iframePlayer = document.getElementById('iframePlayer');
+  const channelNameElement = document.getElementById('channelName');
+  const playerContainer = document.getElementById('player-container');
+  const favoritesSection = document.getElementById('favoritesSection');
+  const favoritesList = document.getElementById('favoritesList');
+  const onlyFavCheckbox = document.getElementById('onlyFavCheckbox');
+  let hlsMain = null;
+  let hlsKurdish = null;
+  let activeChannel = null;
+  const STORAGE_KEY = 'xom_favorites_v1';
+  const streamToElement = new Map();
 
-document.querySelectorAll('.channel').forEach(ch => {
-  const btn = document.createElement('button');
-  btn.className = 'fav-btn';
-  btn.innerHTML = '☆';
-  btn.onclick = e => { e.stopPropagation(); toggleFav(ch); };
-  ch.appendChild(btn);
-});
-
-function toggleFav(el) {
-  const key = el.getAttribute('data-stream') || el.getAttribute('data-iframe') || el.textContent;
-  let favs = JSON.parse(localStorage.getItem('xom_favs') || '[]');
-  const i = favs.indexOf(key);
-  if (i === -1) favs.push(key); else favs.splice(i,1);
-  localStorage.setItem('xom_favs', JSON.stringify(favs));
-  el.querySelector('.fav-btn').innerHTML = i === -1 ? '★' : '☆';
-  el.querySelector('.fav-btn').classList.toggle('favorited', i === -1);
-}
-
-function playChannel(el) {
-  const stream = el.getAttribute('data-stream');
-  const iframeSrc = el.getAttribute('data-iframe');
-  const name = el.getAttribute('data-name') || el.textContent;
-  const isKurdish = el.getAttribute('data-kurdish') === 'true';
-  const isKarwan = el.getAttribute('data-karwan') === 'true';
-
-  channelNameElement.textContent = name;
-  document.querySelectorAll('.active-channel').forEach(c => c.classList.remove('active-channel'));
-  el.classList.add('active-channel');
-
-  // Stoppa allt
-  mainPlayer.pause(); mainPlayer.src = '';
-  kurdishPlayer.pause(); kurdishPlayer.src = '';
-  iframePlayer.src = '';
-  if (hlsMain) { hlsMain.destroy(); hlsMain = null; }
-  if (hlsKurdish) { hlsKurdish.destroy(); hlsKurdish = null; }
-
-  // KARWAN.TV – perfekt zoomad iframe
-  if (isKarwan && stream) {
-    iframePlayer.src = stream;
-    iframePlayer.style.width = '600px';
-    iframePlayer.style.height = '100%';
-    iframePlayer.style.transform = 'scale(1.62)';
-    iframePlayer.style.transformOrigin = 'top left';
-    iframePlayer.style.display = 'block';
-    iframePlayer.classList.add('active-player');
-    return;
+  function initChannelList() {
+    const channels = document.querySelectorAll('.channel');
+    channels.forEach(ch => {
+      const stream = ch.getAttribute('data-stream') || ch.getAttribute('data-iframe');
+      streamToElement.set(stream, ch);
+      const btn = document.createElement('button');
+      btn.className = 'fav-btn';
+      btn.title = 'Favorit';
+      btn.innerText = '☆';
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleFavorite(stream);
+      });
+      ch.appendChild(btn);
+    });
+    loadFavoritesUI();
   }
 
-  // Vanlig iframe
-  if (iframeSrc) {
-    iframePlayer.src = iframeSrc;
-    iframePlayer.style = '';
-    iframePlayer.classList.add('active-player');
-    return;
+  function loadFavoritesFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [];
+      return JSON.parse(raw);
+    } catch (e) {
+      console.error('Fel vid läsning av favoriter:', e);
+      return [];
+    }
   }
 
-  // HLS
-  const video = isKurdish ? kurdishPlayer : mainPlayer;
-  video.classList.add('active-player');
-  iframePlayer.classList.remove('active-player');
-
-  if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(stream);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-    if (isKurdish) hlsKurdish = hls; else hlsMain = hls;
-  } else {
-    video.src = stream;
-    video.play();
+  function saveFavoritesToStorage(list) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    } catch (e) {
+      console.error('Fel vid sparande av favoriter:', e);
+    }
   }
-}
+
+  function isFavorited(stream) {
+    const list = loadFavoritesFromStorage();
+    return list.indexOf(stream) !== -1;
+  }
+
+  function toggleFavorite(stream) {
+    const list = loadFavoritesFromStorage();
+    const i = list.indexOf(stream);
+    if (i === -1) {
+      list.push(stream);
+    } else {
+      list.splice(i, 1);
+    }
+    saveFavoritesToStorage(list);
+    loadFavoritesUI();
+    updateFavButtonForStream(stream);
+    applyFilter();
+  }
+
+  function updateFavButtonForStream(stream) {
+    const el = streamToElement.get(stream);
+    if (!el) return;
+    const btn = el.querySelector('.fav-btn');
+    if (!btn) return;
+    if (isFavorited(stream)) {
+      btn.classList.add('favorited');
+      btn.innerText = '★';
+    } else {
+      btn.classList.remove('favorited');
+      btn.innerText = '☆';
+    }
+  }
+
+  function loadFavoritesUI() {
+    const list = loadFavoritesFromStorage();
+    streamToElement.forEach((el, stream) => {
+      updateFavButtonForStream(stream);
+    });
+    favoritesList.innerHTML = '';
+    if (list.length === 0) {
+      favoritesSection.style.display = 'none';
+      return;
+    }
+    favoritesSection.style.display = '';
+    list.forEach(stream => {
+      const ch = streamToElement.get(stream);
+      const name = ch ? ch.getAttribute('data-name') : stream;
+      const item = document.createElement('div');
+      item.className = 'favorite-item';
+      item.innerText = name;
+      item.title = name;
+      item.addEventListener('click', () => {
+        if (ch) {
+          playChannel(ch);
+        } else {
+          const tmp = document.createElement('div');
+          if (stream.includes('parsatv.com') || stream.includes('telewebion.com')) {
+            tmp.setAttribute('data-iframe', stream);
+          } else {
+            tmp.setAttribute('data-stream', stream);
+          }
+          tmp.setAttribute('data-name', name);
+          if (ch && ch.getAttribute('data-kurdish')) {
+            tmp.setAttribute('data-kurdish', ch.getAttribute('data-kurdish'));
+          }
+          if (ch && ch.getAttribute('data-redirect')) {
+            tmp.setAttribute('data-redirect', ch.getAttribute('data-redirect'));
+          }
+          playChannel(tmp);
+        }
+      });
+      favoritesList.appendChild(item);
+    });
+  }
+
+  function applyFilter() {
+    const onlyFav = onlyFavCheckbox.checked;
+    const channels = document.querySelectorAll('.channel');
+    if (!onlyFav) {
+      channels.forEach(c => c.style.display = '');
+      return;
+    }
+    const favs = loadFavoritesFromStorage();
+    channels.forEach(c => {
+      const stream = c.getAttribute('data-stream') || c.getAttribute('data-iframe');
+      c.style.display = favs.indexOf(stream) !== -1 ? '' : 'none';
+    });
+  }
+
+  onlyFavCheckbox.addEventListener('change', () => {
+    applyFilter();
+  });
+
+  function playChannel(element) {
+    const streamUrl = element.getAttribute('data-stream');
+    const iframeUrl = element.getAttribute('data-iframe');
+    const channelName = element.getAttribute('data-name') || 'Okänd kanal';
+    const isKurdish = element.getAttribute('data-kurdish') === 'true';
+    const isRedirect = element.getAttribute('data-redirect') === 'true';
+    channelNameElement.textContent = channelName;
+    console.log(`Försöker ${isRedirect ? 'öppna' : iframeUrl ? 'ladda iframe' : 'spela upp'}: ${streamUrl || iframeUrl} (Kurdish: ${isKurdish})`);
+
+    if (activeChannel) {
+      activeChannel.classList.remove('active-channel');
+    }
+    const streamKey = streamUrl || iframeUrl;
+    if (streamToElement.has(streamKey)) {
+      const orig = streamToElement.get(streamKey);
+      orig.classList.add('active-channel');
+      activeChannel = orig;
+    } else {
+      activeChannel = null;
+    }
+
+    if (isRedirect) {
+      window.open(streamUrl, '_blank', 'width=800,height=450,scrollbars=yes,resizable=yes');
+      channelNameElement.textContent = `${channelName} (Öppnas i nytt fönster)`;
+      player.classList.remove('active-player');
+      kurdishPlayer.classList.remove('active-player');
+      iframePlayer.classList.remove('active-player');
+      if (hlsMain) { hlsMain.destroy(); hlsMain = null; }
+      if (hlsKurdish) { hlsKurdish.destroy(); hlsKurdish = null; }
+      return;
+    }
+
+    if (iframeUrl) {
+      player.classList.remove('active-player');
+      kurdishPlayer.classList.remove('active-player');
+      if (hlsMain) { hlsMain.destroy(); hlsMain = null; }
+      if (hlsKurdish) { hlsKurdish.destroy(); hlsKurdish = null; }
+      iframePlayer.src = iframeUrl;
+      iframePlayer.classList.add('active-player');
+      console.log('Iframe laddad för', channelName, ':', iframeUrl);
+      return;
+    }
+
+    const video = isKurdish ? kurdishPlayer : player;
+    const hls = isKurdish ? hlsKurdish : hlsMain;
+    const otherPlayer = isKurdish ? player : kurdishPlayer;
+    const otherHls = isKurdish ? hlsMain : hlsKurdish;
+    try { otherPlayer.pause(); } catch (e) {}
+    otherPlayer.src = '';
+    otherPlayer.classList.remove('active-player');
+    iframePlayer.classList.remove('active-player');
+    iframePlayer.src = '';
+    if (otherHls) { otherHls.destroy(); if (isKurdish) hlsMain = null; else hlsKurdish = null; }
+    video.classList.add('active-player');
+    if (hls) { hls.destroy(); }
+    video.src = streamUrl;
+    video.load();
+    if (window.Hls && Hls.isSupported()) {
+      const newHls = new Hls({ debug: true, xhrSetup: function (xhr, url) { console.log('Laddar resurs:', url); } });
+      newHls.loadSource(streamUrl);
+      newHls.attachMedia(video);
+      newHls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.muted = true;
+        video.play().catch(error => {
+          console.error('Autoplay misslyckades:', error);
+          channelNameElement.textContent = `${channelName} (Starta videon manuellt: ${error.message})`;
+        });
+      });
+      newHls.on(Hls.Events.ERROR, (event, data) => {
+        console.error('HLS-fel:', data);
+        if (data.details === 'manifestLoadError') {
+          channelNameElement.textContent = `${channelName} (Fel: Kan inte ladda manifest. Kontrollera strömlänken.)`;
+        } else if (data.details === 'networkError') {
+          channelNameElement.textContent = `${channelName} (Fel: Nätverksproblem. Servern svarar inte.)`;
+          const altStreamUrl = streamUrl.replace('corsproxy.io/?', 'https://api.allorigins.win/raw?url=');
+          console.log('Försöker alternativ proxy:', altStreamUrl);
+          newHls.loadSource(altStreamUrl);
+          newHls.attachMedia(video);
+        } else if (data.details === 'mediaError') {
+          channelNameElement.textContent = `${channelName} (Fel: Media kunde inte avkodas.)`;
+        } else {
+          channelNameElement.textContent = `${channelName} (Fel: ${data.details})`;
+        }
+      });
+      if (isKurdish) hlsKurdish = newHls; else hlsMain = newHls;
+    } else if (video.canPlayType && video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.muted = true;
+      video.play().catch(error => {
+        console.error('Autoplay misslyckades:', error);
+        channelNameElement.textContent = `${channelName} (Starta videon manuellt: ${error.message})`;
+      });
+    } else {
+      channelNameElement.textContent = `${channelName} (Webbläsaren stöder inte HLS.)`;
+    }
+
+    // Special för karwan-kanaler: Applicera zoom på video
+    if (element.getAttribute('data-karwan') === 'true') {
+      video.style.transform = 'scale(1.6)';
+      video.style.transformOrigin = 'top left';
+    } else {
+      video.style.transform = 'none';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initChannelList();
+    applyFilter();
+  });
 </script>
 </body>
 </html>
