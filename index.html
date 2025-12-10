@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>XOM TV – Alla Iranska Kanaler via Telewebion (dec 2025)</title>
+    <title>XOM TV – Alla Iranska Kanaler (dec 2025)</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:Arial,sans-serif;background:#1a1a2e;color:white}
-        .header{background:#16213e;padding:20px;text-align:center;border-bottom:3px solid #4ecdc4}
-        .header h1{color:#4ecdc4;font-size:2em;margin-bottom:10px}
-        .warning{color:#ffcc00;font-size:0.95em;margin-top:10px}
-        .container{display:flex;height:calc(100vh - 120px)}
-        .sidebar{width:280px;background:#0f3460;overflow-y:auto;padding:15px}
-        .section h3{color:#4ecdc4;margin:20px 0 10px 0;font-size:1.2em;border-bottom:2px solid #4ecdc4;padding-bottom:5px}
-        .channel{background:#4ecdc4;color:#1a1a2e;padding:12px;margin:6px 0;border-radius:8px;cursor:pointer;font-weight:bold;transition:.3s}
-        .channel:hover{background:#45b7aa;transform:translateX(6px)}
+        body{font-family:Arial,sans-serif;background:#1a1a2e;color:white;display:flex;flex-direction:column;height:100vh}
+        .header{background:#16213e;padding:20px;text-align:center;border-bottom:4px solid #4ecdc4}
+        .header h1{color:#4ecdc4;font-size:2.2em;margin:0}
+        .warning{color:#ffcc00;font-size:0.95em;margin-top:8px}
+        .container{flex:1;display:flex;overflow:hidden}
+        .sidebar{width:320px;background:#0f3460;overflow-y:auto;padding:20px}
+        .section h3{color:#4ecdc4;margin:25px 0 12px 0;font-size:1.3em;border-bottom:2px solid #4ecdc4;padding-bottom:6px}
+        .channel{background:#4ecdc4;color:#000;padding:14px;margin:7px 0;border-radius:10px;cursor:pointer;font-weight:bold;transition:.3s;text-align:center}
+        .channel:hover{background:#45b7aa;transform:scale(1.02)}
         .channel.active{background:#e74c3c;color:white}
         .player-area{flex:1;background:#000;display:flex;flex-direction:column}
         .player-header{background:#16213e;padding:15px;text-align:center}
-        .player-header h2{color:#4ecdc4;font-size:1.6em}
+        .player-header h2{color:#4ecdc4;font-size:1.8em;margin:0}
         #player{flex:1;width:100%;border:none}
-        @media(max-width:768px){
-            .container{flex-direction:column;height:auto}
-            .sidebar{width:100%;max-height:220px}
-            .player-area{min-height:400px}
+        @media(max-width:900px){
+            .container{flex-direction:column}
+            .sidebar{width:100%;max-height:40vh}
+            .player-area{min-height:60vh}
         }
     </style>
 </head>
@@ -32,7 +32,7 @@
 <div class="header">
     <h1>XOM TV</h1>
     <p>Alla iranska TV-kanaler via Telewebion – 100 % fungerande</p>
-    <p class="warning">Tips: Kör via lokal server (python -m http.server) för att slippa blockering</p>
+    <p class="warning">Kör via lokal server (python -m http.server) för bästa resultat</p>
 </div>
 
 <div class="container">
@@ -46,7 +46,7 @@
             <div class="channel" onclick="load('tv4','TV4',this)">TV4</div>
             <div class="channel" onclick="load('tv5','TV5',this)">TV5</div>
             <div class="channel" onclick="load('nasim','NASIM',this)">NASIM</div>
-            <div class="channel" onclick="load('varzesh','VARZESH',this)">VARZESH (Sport)</div>
+            <div class="channel" onclick="load('varzesh','VARZESH',this)">VARZESH</div>
             <div class="channel" onclick="load('irinn','IRINN / KHABAR',this)">IRINN / KHABAR</div>
             <div class="channel" onclick="load('ifilmtv','IFILM Farsi',this)">IFILM Farsi</div>
             <div class="channel" onclick="load('ifilmarabic','IFILM Arabic',this)">IFILM Arabic</div>
@@ -59,7 +59,11 @@
             <div class="channel" onclick="load('ofogh','OFOGH',this)">OFOGH</div>
             <div class="channel" onclick="load('quran','QURAN TV',this)">QURAN TV</div>
             <div class="channel" onclick="load('pooya','POOYA & JAVANAN',this)">POOYA & JAVANAN</div>
-            <div class="channel" onclick="load('javaneh','JAVANEH (KOODAK+)',this)">JAVANEH / KOODAK+</div>
+            <div class="channel" onclick="load('javaneh','JAVANEH / KOODAK+',this)">JAVANEH / KOODAK+</div>
+            <div class="channel" onclick="load('sepehr','SEPEHR',this)">SEPEHR</div>
+            <div class="channel" onclick="load('4kfaratar','4K FARATAR',this)">4K FARATAR</div>
+            <div class="channel" onclick="load('ava','AVA',this)">AVA</div>
+            <div class="channel" onclick="load('sarbedaran','SARBEDARAN',this)">SARBEDARAN</div>
         </div>
 
         <div class="section">
@@ -83,6 +87,7 @@
             <div class="channel" onclick="load('markazi','MARKAZI',this)">MARKAZI</div>
             <div class="channel" onclick="load('semnan','SEMNAN',this)">SEMNAN</div>
             <div class="channel" onclick="load('zahedan','ZAHEDAN',this)">ZAHEDAN</div>
+            <div class="channel" onclick="load('mahabad','MAHABAD',this)">MAHABAD</div>
         </div>
 
     </div>
