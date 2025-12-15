@@ -70,7 +70,7 @@
                 flex:0 0 auto;
                 height:65vh; /* 65% av skärmen för spelare */
                 min-height:300px;
-                max-height:calc(100vh - 35vh); /* Se till att det finns plats för kanallista */
+                max-height:calc(100vh - 35vh);
             }
             
             /* Kanallista - mindre del av skärmen */
@@ -82,7 +82,7 @@
                 overflow-y:auto;
                 padding:10px;
                 position:relative;
-                display:block !important; /* VIKTIGT: visa alltid på mobil */
+                display:block !important;
             }
             
             /* Optimera textstorlekar för mobil */
@@ -116,12 +116,12 @@
         /* Extra små skärmar */
         @media(max-width:480px){
             .player-area{
-                height:60vh; /* Lite mindre på mycket små skärmar */
+                height:60vh;
                 min-height:280px;
             }
             
             .sidebar{
-                height:40vh; /* Lite större kanallista */
+                height:40vh;
                 min-height:220px;
             }
             
@@ -211,9 +211,9 @@
             <div class="channel" onclick="load('golkhane','GOLKHANE',this)"><span class="label">GOLKHANE</span><button class="fav" onclick="toggleFav(event,'golkhane','GOLKHANE',this)">☆</button></div>
             <div class="channel" onclick="load('negarestan','NEGARESTAN',this)"><span class="label">NEGARESTAN</span><button class="fav" onclick="toggleFav(event,'negarestan','NEGARESTAN',this)">☆</button></div>
             <div class="channel" onclick="load('karoon','KAROON',this)"><span class="label">KAROON</span><button class="fav" onclick="toggleFav(event,'karoon','KAROON',this)">☆</button></div>
-            <div class="channel" onclick="load('sport3','TELEWEBION',this)"><span class="label">TELEWEBION</span><button class="fav" onclick="toggleFav(event,'sport3','TELEWEBION',this)">☆</button></div>
-            <div class="channel" onclick="load('sport1','TELEWEBION1',this)"><span class="label">TELEWEBION1</span><button class="fav" onclick="toggleFav(event,'sport1','TELEWEBION1',this)">☆</button></div>
-            <div class="channel" onclick="load('sport3','TELEWEBION2',this)"><span class="label">TELEWEBION2</span><button class="fav" onclick="toggleFav(event,'sport3','TELEWEBION2',this)">☆</button></div>
+            <div class="channel" onclick="load('telewebion','TELEWEBION',this)"><span class="label">TELEWEBION</span><button class="fav" onclick="toggleFav(event,'telewebion','TELEWEBION',this)">☆</button></div>
+            <div class="channel" onclick="load('telewebion1','TELEWEBION1',this)"><span class="label">TELEWEBION1</span><button class="fav" onclick="toggleFav(event,'telewebion1','TELEWEBION1',this)">☆</button></div>
+            <div class="channel" onclick="load('telewebion2','TELEWEBION2',this)"><span class="label">TELEWEBION2</span><button class="fav" onclick="toggleFav(event,'telewebion2','TELEWEBION2',this)">☆</button></div>
             <div class="channel" onclick="load('parseh','PARSEH',this)"><span class="label">PARSEH</span><button class="fav" onclick="toggleFav(event,'parseh','PARSEH',this)">☆</button></div>
             <div class="channel" onclick="load('nesfejahan','NESFEJAHAN',this)"><span class="label">NESFEJAHAN</span><button class="fav" onclick="toggleFav(event,'nesfejahan','NESFEJAHAN',this)">☆</button></div>
             <div class="channel" onclick="load('sarbedaran','SARBEDARAN',this)"><span class="label">SARBEDARAN</span><button class="fav" onclick="toggleFav(event,'sarbedaran','SARBEDARAN',this)">☆</button></div>
@@ -355,10 +355,16 @@
     }
 
     function load(id, name, btn) {
+        console.log('Loading channel:', id, name); // Debug log
+        
         const player = document.getElementById('player');
         const nameEl = document.getElementById('channelName');
 
-        player.src = `https://m.telewebion.com/embed/live/${id}`;
+        // Bygg korrekt URL för Telewebion
+        const url = `https://m.telewebion.com/embed/live/${id}`;
+        console.log('Loading URL:', url);
+        
+        player.src = url;
         nameEl.textContent = name;
 
         if (activeBtn) activeBtn.classList.remove('active');
@@ -374,7 +380,10 @@
                 }, 300);
             }
         } else {
-            const found = Array.from(document.querySelectorAll('.channel')).find(c => (c.dataset.id || getIdFromOnclick(c)) === id);
+            const found = Array.from(document.querySelectorAll('.channel')).find(c => {
+                const chId = c.dataset.id || getIdFromOnclick(c);
+                return chId === id;
+            });
             if (found) {
                 found.classList.add('active');
                 activeBtn = found;
@@ -445,13 +454,19 @@
             const name = ch.dataset.name || getNameFromOnclick(ch) || ch.querySelector('.label')?.textContent?.trim();
             if (id) ch.dataset.id = id;
             if (name) ch.dataset.name = name;
+            
+            // Debug: logga alla kanaler
+            console.log('Channel found:', id, name);
         });
 
         updateStarButtons();
         refreshFavoritesList();
 
         const initial = document.querySelector('.channel.active');
-        if (initial) initial.click();
+        if (initial) {
+            console.log('Initial channel:', initial.dataset.id || getIdFromOnclick(initial));
+            initial.click();
+        }
 
         // På mobil, visa kanallistan som standard
         if (window.innerWidth <= 900) {
@@ -463,6 +478,12 @@
             document.querySelector('.menu-toggle').textContent = '✕';
         }
     });
+
+    // Lägg till testfunktion för att kontrollera länkar
+    window.testChannel = function(id) {
+        console.log('Test channel link: https://m.telewebion.com/embed/live/' + id);
+        window.open('https://m.telewebion.com/embed/live/' + id, '_blank');
+    };
 
     window.toggleFav = toggleFav;
     window.load = load;
