@@ -6,8 +6,23 @@
     <title>XOM TV – Alla Iranska Kanaler (dec 2025)</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:Arial,sans-serif;background:#1a1a2e;color:white;display:flex;flex-direction:column;height:100vh;overflow:hidden}
-        .header{background:#16213e;padding:15px;text-align:center;border-bottom:4px solid #4ecdc4;position:relative;flex-shrink:0}
+        body{
+            font-family:Arial,sans-serif;
+            background:#1a1a2e;
+            color:white;
+            display:flex;
+            flex-direction:column;
+            height:100vh;
+            overflow:hidden;
+        }
+        .header{
+            background:#16213e;
+            padding:15px;
+            text-align:center;
+            border-bottom:4px solid #4ecdc4;
+            position:relative;
+            flex-shrink:0;
+        }
         .header h1{color:#4ecdc4;font-size:1.8em;margin:0}
         .warning{color:#ffcc00;font-size:0.9em;margin-top:8px}
         .container{
@@ -22,8 +37,28 @@
             padding:15px;
             flex-shrink:0;
         }
-        .section h3{color:#4ecdc4;margin:25px 0 12px 0;font-size:1.2em;border-bottom:2px solid #4ecdc4;padding-bottom:6px}
-        .channel{background:#4ecdc4;color:#000;padding:10px 12px;margin:6px 0;border-radius:10px;cursor:pointer;font-weight:bold;transition:.18s;text-align:left;font-size:1em;display:flex;justify-content:space-between;align-items:center}
+        .section h3{
+            color:#4ecdc4;
+            margin:25px 0 12px 0;
+            font-size:1.2em;
+            border-bottom:2px solid #4ecdc4;
+            padding-bottom:6px;
+        }
+        .channel{
+            background:#4ecdc4;
+            color:#000;
+            padding:10px 12px;
+            margin:6px 0;
+            border-radius:10px;
+            cursor:pointer;
+            font-weight:bold;
+            transition:.18s;
+            text-align:left;
+            font-size:1em;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
         .channel:hover{background:#45b7aa;transform:scale(1.02)}
         .channel.active{background:#e74c3c;color:white}
         .channel .label{flex:1;padding-right:8px}
@@ -37,12 +72,33 @@
             line-height:1;
         }
         .fav.fav-active{color:#f5d259}
-        .player-area{flex:1;background:#000;display:flex;flex-direction:column;min-height:0;overflow:hidden}
-        .player-header{background:#16213e;padding:12px;text-align:center;flex-shrink:0}
-        .player-header h2{color:#4ecdc4;font-size:1.5em;margin:0}
-        #player{flex:1;width:100%;border:none;min-height:0;background:#000}
+        .player-area{
+            flex:1;
+            background:#000;
+            display:flex;
+            flex-direction:column;
+            min-height:0;
+            overflow:hidden;
+        }
+        .player-header{
+            background:#16213e;
+            padding:12px;
+            text-align:center;
+            flex-shrink:0;
+        }
+        .player-header h2{
+            color:#4ecdc4;
+            font-size:1.5em;
+            margin:0;
+        }
+        #player{
+            flex:1;
+            width:100%;
+            border:none;
+            min-height:0;
+            background:#000;
+        }
 
-        /* Mobil: spelaren överst, kanallista under med scroll */
         .menu-toggle{
             display:none;
             position:absolute;
@@ -64,32 +120,28 @@
                 height:auto;
                 min-height:0;
             }
-            
-            /* SPELARDELEN - STÖRRE på mobil */
+
             .player-area{
                 flex:0 0 auto;
-                height:65vh; /* 65% av skärmen för spelare */
+                height:65vh;
                 min-height:300px;
-                max-height:calc(100vh - 35vh);
+                max-height:calc(100vh - 40vh);
             }
-            
-            /* Kanallista - mindre del av skärmen */
+
             .sidebar{
                 width:100%;
-                height:35vh; /* 35% av skärmen för kanallista */
+                height:35vh;
                 min-height:200px;
                 max-height:calc(100vh - 65vh);
                 overflow-y:auto;
                 padding:10px;
                 position:relative;
-                display:block !important;
             }
-            
-            /* Optimera textstorlekar för mobil */
+
             .header h1{font-size:1.5em}
             .header p{font-size:0.9em}
             .warning{font-size:0.8em}
-            
+
             .sidebar .section h3{
                 display:block;
                 margin:12px 0 6px 0;
@@ -100,51 +152,46 @@
                 background:#0f3460;
                 z-index:10;
             }
-            
+
             .channel{
                 margin:4px 0;
                 padding:8px 10px;
                 border-radius:8px;
                 font-size:0.95em;
             }
-            
+
             .menu-toggle{
                 display:inline-block;
             }
         }
 
-        /* Extra små skärmar */
         @media(max-width:480px){
             .player-area{
                 height:60vh;
                 min-height:280px;
             }
-            
+
             .sidebar{
                 height:40vh;
                 min-height:220px;
             }
-            
+
             .header{padding:10px}
             .header h1{font-size:1.3em}
-            
             .player-header h2{font-size:1.3em}
-            
             .channel{
                 padding:7px 9px;
                 font-size:0.9em;
             }
         }
 
-        /* Landscape mode - bättre användning av utrymme */
         @media(max-width:900px) and (orientation: landscape){
             .player-area{
-                height:60vh;
+                height:70vh;
                 min-height:250px;
             }
-            
             .sidebar{
-                height:40vh;
+                height:30vh;
                 min-height:180px;
             }
         }
@@ -153,7 +200,7 @@
 <body>
 
 <div class="header">
-    <button class="menu-toggle" onclick="toggleSidebar()">✕</button>
+    <button class="menu-toggle" onclick="toggleSidebar()">≡</button>
     <h1>XOM TV</h1>
     <p>Alla iranska TV-kanaler – fungerar perfekt</p>
     <p class="warning">Kör via lokal server → python -m http.server</p>
@@ -164,11 +211,16 @@
         <div class="player-header">
             <h2 id="channelName">TV1</h2>
         </div>
-        <iframe id="player" src="https://m.telewebion.com/embed/live/tv1" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+        <iframe
+            id="player"
+            src="https://m.telewebion.com/embed/live/tv1"
+            style="width:100%;height:100%;border:none;"
+            allowfullscreen
+            allow="autoplay; encrypted-media">
+        </iframe>
     </div>
 
     <div class="sidebar" id="sidebar">
-        <!-- Favoriter-sektion -->
         <div class="section" id="favSection">
             <h3>Favoriter</h3>
             <div id="favoritesList" style="color:#fff">Inga favoriter</div>
@@ -211,9 +263,9 @@
             <div class="channel" onclick="load('golkhane','GOLKHANE',this)"><span class="label">GOLKHANE</span><button class="fav" onclick="toggleFav(event,'golkhane','GOLKHANE',this)">☆</button></div>
             <div class="channel" onclick="load('negarestan','NEGARESTAN',this)"><span class="label">NEGARESTAN</span><button class="fav" onclick="toggleFav(event,'negarestan','NEGARESTAN',this)">☆</button></div>
             <div class="channel" onclick="load('karoon','KAROON',this)"><span class="label">KAROON</span><button class="fav" onclick="toggleFav(event,'karoon','KAROON',this)">☆</button></div>
-            <div class="channel" onclick="load('telewebion','TELEWEBION',this)"><span class="label">TELEWEBION</span><button class="fav" onclick="toggleFav(event,'telewebion','TELEWEBION',this)">☆</button></div>
-            <div class="channel" onclick="load('telewebion1','TELEWEBION1',this)"><span class="label">TELEWEBION1</span><button class="fav" onclick="toggleFav(event,'telewebion1','TELEWEBION1',this)">☆</button></div>
-            <div class="channel" onclick="load('telewebion2','TELEWEBION2',this)"><span class="label">TELEWEBION2</span><button class="fav" onclick="toggleFav(event,'telewebion2','TELEWEBION2',this)">☆</button></div>
+            <div class="channel" onclick="load('sport3','TELEWEBION',this)"><span class="label">TELEWEBION</span><button class="fav" onclick="toggleFav(event,'sport3','TELEWEBION',this)">☆</button></div>
+            <div class="channel" onclick="load('sport1','TELEWEBION1',this)"><span class="label">TELEWEBION1</span><button class="fav" onclick="toggleFav(event,'sport1','TELEWEBION1',this)">☆</button></div>
+            <div class="channel" onclick="load('sport3','TELEWEBION2',this)"><span class="label">TELEWEBION2</span><button class="fav" onclick="toggleFav(event,'sport3','TELEWEBION2',this)">☆</button></div>
             <div class="channel" onclick="load('parseh','PARSEH',this)"><span class="label">PARSEH</span><button class="fav" onclick="toggleFav(event,'parseh','PARSEH',this)">☆</button></div>
             <div class="channel" onclick="load('nesfejahan','NESFEJAHAN',this)"><span class="label">NESFEJAHAN</span><button class="fav" onclick="toggleFav(event,'nesfejahan','NESFEJAHAN',this)">☆</button></div>
             <div class="channel" onclick="load('sarbedaran','SARBEDARAN',this)"><span class="label">SARBEDARAN</span><button class="fav" onclick="toggleFav(event,'sarbedaran','SARBEDARAN',this)">☆</button></div>
@@ -355,16 +407,10 @@
     }
 
     function load(id, name, btn) {
-        console.log('Loading channel:', id, name); // Debug log
-        
         const player = document.getElementById('player');
         const nameEl = document.getElementById('channelName');
 
-        // Bygg korrekt URL för Telewebion
-        const url = `https://m.telewebion.com/embed/live/${id}`;
-        console.log('Loading URL:', url);
-        
-        player.src = url;
+        player.src = `https://m.telewebion.com/embed/live/${id}`;
         nameEl.textContent = name;
 
         if (activeBtn) activeBtn.classList.remove('active');
@@ -372,22 +418,16 @@
         if (ch) {
             ch.classList.add('active');
             activeBtn = ch;
-            
-            // Scrolla till den valda kanalen på mobil
             if (window.innerWidth <= 900) {
                 setTimeout(() => {
                     ch.scrollIntoView({behavior: 'smooth', block: 'center'});
                 }, 300);
             }
         } else {
-            const found = Array.from(document.querySelectorAll('.channel')).find(c => {
-                const chId = c.dataset.id || getIdFromOnclick(c);
-                return chId === id;
-            });
+            const found = Array.from(document.querySelectorAll('.channel')).find(c => (c.dataset.id || getIdFromOnclick(c)) === id);
             if (found) {
                 found.classList.add('active');
                 activeBtn = found;
-                
                 if (window.innerWidth <= 900) {
                     setTimeout(() => {
                         found.scrollIntoView({behavior: 'smooth', block: 'center'});
@@ -397,56 +437,47 @@
         }
     }
 
-    // Toggle för mobiler - dölj/visa kanallistan
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const playerArea = document.querySelector('.player-area');
-        const toggleBtn = document.querySelector('.menu-toggle');
-        
-        if (sidebar.style.display === 'none') {
-            // Visa kanallistan
+        const btn = document.querySelector('.menu-toggle');
+
+        // OM gömd → visa
+        if (sidebar.style.display === 'none' || sidebar.style.display === '') {
             sidebar.style.display = 'block';
             if (window.innerWidth <= 900) {
                 playerArea.style.height = '65vh';
-                if (window.innerWidth <= 480px) {
-                    playerArea.style.height = '60vh';
-                }
+            } else {
+                playerArea.style.height = 'auto';
             }
-            toggleBtn.textContent = '✕';
+            btn.textContent = '✕';
         } else {
-            // Dölj kanallistan (fullskärm för spelare)
+            // OM synlig → göm
             sidebar.style.display = 'none';
             playerArea.style.height = '100vh';
-            toggleBtn.textContent = '≡';
+            btn.textContent = '≡';
         }
     }
 
-    // Hantera fönsterstorleksändringar
     window.addEventListener('resize', function() {
         const sidebar = document.getElementById('sidebar');
         const playerArea = document.querySelector('.player-area');
-        const toggleBtn = document.querySelector('.menu-toggle');
-        
+        const btn = document.querySelector('.menu-toggle');
+
         if (window.innerWidth > 900) {
-            // Desktop - visa allt normalt
             sidebar.style.display = 'block';
             playerArea.style.height = 'auto';
-            toggleBtn.textContent = '✕';
+            btn.textContent = '≡';
         } else {
-            // Mobil - om kanallistan visas, sätt rätt höjd
-            if (sidebar.style.display !== 'none') {
-                playerArea.style.height = '65vh';
-                if (window.innerWidth <= 480px) {
-                    playerArea.style.height = '60vh';
-                }
-                toggleBtn.textContent = '✕';
+            // På mobil: behåll nuvarande state, men justera höjd
+            if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+                playerArea.style.height = '100vh';
             } else {
-                toggleBtn.textContent = '≡';
+                playerArea.style.height = '65vh';
             }
         }
     });
 
-    // Init
     document.addEventListener('DOMContentLoaded', () => {
         const channels = document.querySelectorAll('.channel');
         channels.forEach(ch => {
@@ -454,36 +485,23 @@
             const name = ch.dataset.name || getNameFromOnclick(ch) || ch.querySelector('.label')?.textContent?.trim();
             if (id) ch.dataset.id = id;
             if (name) ch.dataset.name = name;
-            
-            // Debug: logga alla kanaler
-            console.log('Channel found:', id, name);
         });
 
         updateStarButtons();
         refreshFavoritesList();
 
         const initial = document.querySelector('.channel.active');
-        if (initial) {
-            console.log('Initial channel:', initial.dataset.id || getIdFromOnclick(initial));
-            initial.click();
-        }
+        if (initial) initial.click();
 
-        // På mobil, visa kanallistan som standard
+        // På mobil: börja med stor spelare och gömd lista
         if (window.innerWidth <= 900) {
-            document.getElementById('sidebar').style.display = 'block';
-            document.querySelector('.player-area').style.height = '65vh';
-            if (window.innerWidth <= 480px) {
-                document.querySelector('.player-area').style.height = '60vh';
-            }
-            document.querySelector('.menu-toggle').textContent = '✕';
+            const sidebar = document.getElementById('sidebar');
+            const playerArea = document.querySelector('.player-area');
+            sidebar.style.display = 'none';
+            playerArea.style.height = '100vh';
+            document.querySelector('.menu-toggle').textContent = '≡';
         }
     });
-
-    // Lägg till testfunktion för att kontrollera länkar
-    window.testChannel = function(id) {
-        console.log('Test channel link: https://m.telewebion.com/embed/live/' + id);
-        window.open('https://m.telewebion.com/embed/live/' + id, '_blank');
-    };
 
     window.toggleFav = toggleFav;
     window.load = load;
