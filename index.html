@@ -11,12 +11,14 @@
         .header{background:#16213e;padding:20px;text-align:center;border-bottom:4px solid #4ecdc4;position:relative}
         .header h1{color:#4ecdc4;font-size:2.3em;margin:0}
         .warning{color:#ffcc00;font-size:1em;margin-top:10px}
+        /* Gör så att container får en faktisk höjd (sätts också dynamiskt via JS) */
         .container{
             flex:1;
             display:flex;
             overflow:hidden;
             /* Viktigt för att barn med overflow:auto ska scrolla på mobiler */
             min-height:0;
+            /* height justeras via JS så att sidebar scrollar inuti och player alltid syns */
         }
         .sidebar{
             width:340px;
@@ -27,7 +29,7 @@
         }
         .section h3{color:#4ecdc4;margin:30px 0 15px 0;font-size:1.35em;border-bottom:2px solid #4ecdc4;padding-bottom:8px}
         /* Kanalrader: layout för label + favoritknapp */
-        .channel{background:#4ecdc4;color:#000;padding:12px 12px;margin:8px 0;border-radius:12px;cursor:pointer;font-weight:bold;transition:.18s;text-align:left;font-size:1.05em;display:flex;justify-content:space-between;align-items:center}
+        .channel{background:#4ecdc4;color:#000;padding:12px 12px;margin:8px 0;border-radius:12px;cursor:pointer;font-weight:bold;transition:.18s;text-align:left;font-size:1.05em;display:flex;justify-c[...]
         .channel:hover{background:#45b7aa;transform:scale(1.02)}
         .channel.active{background:#e74c3c;color:white}
         .channel .label{flex:1;padding-right:8px}
@@ -41,10 +43,10 @@
             line-height:1;
         }
         .fav.fav-active{color:#f5d259} /* gul färg när favorited */
-        .player-area{flex:1;background:#000;display:flex;flex-direction:column}
+        .player-area{flex:1;background:#000;display:flex;flex-direction:column;min-height:0}
         .player-header{background:#16213e;padding:18px;text-align:center}
         .player-header h2{color:#4ecdc4;font-size:2em;margin:0}
-        #player{flex:1;width:100%;border:none}
+        #player{flex:1;width:100%;border:none;height:100%;display:block}
 
         /* Mobil: gör sidofältet till en horisontell strip längst ner som du kan scrolla */
         .menu-toggle{
@@ -103,7 +105,7 @@
     <p class="warning">Kör via lokal server → python -m http.server</p>
 </div>
 
-<div class="container">
+<div class="container" id="mainContainer">
     <div class="sidebar" id="sidebar">
 
         <!-- Favoriter-sektion -->
@@ -123,49 +125,49 @@
             <div class="channel" onclick="load('tv4','TV4',this)"><span class="label">TV4</span><button class="fav" onclick="toggleFav(event,'tv4','TV4',this)">☆</button></div>
             <div class="channel" onclick="load('Tehran','Tehran',this)"><span class="label">Tehran</span><button class="fav" onclick="toggleFav(event,'Tehran','Tehran',this)">☆</button></div>
             <div class="channel" onclick="load('nasim','NASIM',this)"><span class="label">NASIM</span><button class="fav" onclick="toggleFav(event,'nasim','NASIM',this)">☆</button></div>
-            <div class="channel" onclick="load('varzesh','VARZESH',this)"><span class="label">VARZESH (Sport)</span><button class="fav" onclick="toggleFav(event,'varzesh','VARZESH',this)">☆</button></div>
-            <div class="channel" onclick="load('irinn','IRINN / KHABAR',this)"><span class="label">IRINN / KHABAR</span><button class="fav" onclick="toggleFav(event,'irinn','IRINN / KHABAR',this)">☆</button></div>
+            <div class="channel" onclick="load('varzesh','VARZESH',this)"><span class="label">VARZESH (Sport)</span><button class="fav" onclick="toggleFav(event,'varzesh','VARZESH',this)">☆</button>[...]
+            <div class="channel" onclick="load('irinn','IRINN / KHABAR',this)"><span class="label">IRINN / KHABAR</span><button class="fav" onclick="toggleFav(event,'irinn','IRINN / KHABAR',this)">☆[...]
             <div class="channel" onclick="load('irinn2','KHABAR2',this)"><span class="label">KHABAR2</span><button class="fav" onclick="toggleFav(event,'irinn2','KHABAR2',this)">☆</button></div>
-            <div class="channel" onclick="load('ifilm','IFILM Farsi',this)"><span class="label">IFILM Farsi</span><button class="fav" onclick="toggleFav(event,'ifilm','IFILM Farsi',this)">☆</button></div>
+            <div class="channel" onclick="load('ifilm','IFILM Farsi',this)"><span class="label">IFILM Farsi</span><button class="fav" onclick="toggleFav(event,'ifilm','IFILM Farsi',this)">☆</button>[...]
             <div class="channel" onclick="load('tv1plus','TV1PLUS',this)"><span class="label">TV1PLUS</span><button class="fav" onclick="toggleFav(event,'tv1plus','TV1PLUS',this)">☆</button></div>
             <div class="channel" onclick="load('omid','OMID',this)"><span class="label">OMID</span><button class="fav" onclick="toggleFav(event,'omid','OMID',this)">☆</button></div>
-            <div class="channel" onclick="load('ifilmenglish','IFILM English',this)"><span class="label">IFILM English</span><button class="fav" onclick="toggleFav(event,'ifilmenglish','IFILM English',this)">☆</button></div>
-            <div class="channel" onclick="load('namayesh','NAMAYESH',this)"><span class="label">NAMAYESH</span><button class="fav" onclick="toggleFav(event,'namayesh','NAMAYESH',this)">☆</button></div>
-            <div class="channel" onclick="load('mostanad','MOSTANAD',this)"><span class="label">MOSTANAD</span><button class="fav" onclick="toggleFav(event,'mostanad','MOSTANAD',this)">☆</button></div>
+            <div class="channel" onclick="load('ifilmenglish','IFILM English',this)"><span class="label">IFILM English</span><button class="fav" onclick="toggleFav(event,'ifilmenglish','IFILM English'[...]
+            <div class="channel" onclick="load('namayesh','NAMAYESH',this)"><span class="label">NAMAYESH</span><button class="fav" onclick="toggleFav(event,'namayesh','NAMAYESH',this)">☆</button></d[...]
+            <div class="channel" onclick="load('mostanad','MOSTANAD',this)"><span class="label">MOSTANAD</span><button class="fav" onclick="toggleFav(event,'mostanad','MOSTANAD',this)">☆</button></d[...]
             <div class="channel" onclick="load('hdtest','TAMASHA',this)"><span class="label">TAMASHA</span><button class="fav" onclick="toggleFav(event,'hdtest','TAMASHA',this)">☆</button></div>
-            <div class="channel" onclick="load('amouzesh','AMOOZESH',this)"><span class="label">AMOOZESH</span><button class="fav" onclick="toggleFav(event,'amouzesh','AMOOZESH',this)">☆</button></div>
+            <div class="channel" onclick="load('amouzesh','AMOOZESH',this)"><span class="label">AMOOZESH</span><button class="fav" onclick="toggleFav(event,'amouzesh','AMOOZESH',this)">☆</button></d[...]
             <div class="channel" onclick="load('salamat','SALAMAT',this)"><span class="label">SALAMAT</span><button class="fav" onclick="toggleFav(event,'salamat','SALAMAT',this)">☆</button></div>
             <div class="channel" onclick="load('ofogh','OFOGH',this)"><span class="label">OFOGH</span><button class="fav" onclick="toggleFav(event,'ofogh','OFOGH',this)">☆</button></div>
             <div class="channel" onclick="load('quran','QURAN TV',this)"><span class="label">QURAN TV</span><button class="fav" onclick="toggleFav(event,'quran','QURAN TV',this)">☆</button></div>
-            <div class="channel" onclick="load('pooya','POOYA & JAVANAN',this)"><span class="label">POOYA & JAVANAN</span><button class="fav" onclick="toggleFav(event,'pooya','POOYA & JAVANAN',this)">☆</button></div>
-            <div class="channel" onclick="load('javaneh','JAVANEH / KOODAK+',this)"><span class="label">JAVANEH / KOODAK+</span><button class="fav" onclick="toggleFav(event,'javaneh','JAVANEH / KOODAK+',this)">☆</button></div>
+            <div class="channel" onclick="load('pooya','POOYA & JAVANAN',this)"><span class="label">POOYA & JAVANAN</span><button class="fav" onclick="toggleFav(event,'pooya','POOYA & JAVANAN',this)">[...]
+            <div class="channel" onclick="load('javaneh','JAVANEH / KOODAK+',this)"><span class="label">JAVANEH / KOODAK+</span><button class="fav" onclick="toggleFav(event,'javaneh','JAVANEH / KOODAK[...]
             <div class="channel" onclick="load('sepehr','SEPEHR',this)"><span class="label">SEPEHR</span><button class="fav" onclick="toggleFav(event,'sepehr','SEPEHR',this)">☆</button></div>
             <div class="channel" onclick="load('faratar','FARATAR',this)"><span class="label">FARATAR</span><button class="fav" onclick="toggleFav(event,'faratar','FARATAR',this)">☆</button></div>
             <div class="channel" onclick="load('nava','NAVA',this)"><span class="label">NAVA</span><button class="fav" onclick="toggleFav(event,'nava','NAVA',this)">☆</button></div>
             <div class="channel" onclick="load('nama','NAMA',this)"><span class="label">NAMA</span><button class="fav" onclick="toggleFav(event,'nama','NAMA',this)">☆</button></div>
             <div class="channel" onclick="load('iribu','ROYA',this)"><span class="label">ROYA</span><button class="fav" onclick="toggleFav(event,'iribu','ROYA',this)">☆</button></div>
             <div class="channel" onclick="load('ara','ARA',this)"><span class="label">ARA</span><button class="fav" onclick="toggleFav(event,'ara','ARA',this)">☆</button></div>
-            <div class="channel" onclick="load('iraneman','IRANEMAN',this)"><span class="label">IRANEMAN</span><button class="fav" onclick="toggleFav(event,'iraneman','IRANEMAN',this)">☆</button></div>
-            <div class="channel" onclick="load('golkhane','GOLKHANE',this)"><span class="label">GOLKHANE</span><button class="fav" onclick="toggleFav(event,'golkhane','GOLKHANE',this)">☆</button></div>
-            <div class="channel" onclick="load('negarestan','NEGARESTAN',this)"><span class="label">NEGARESTAN</span><button class="fav" onclick="toggleFav(event,'negarestan','NEGARESTAN',this)">☆</button></div>
+            <div class="channel" onclick="load('iraneman','IRANEMAN',this)"><span class="label">IRANEMAN</span><button class="fav" onclick="toggleFav(event,'iraneman','IRANEMAN',this)">☆</button></d[...]
+            <div class="channel" onclick="load('golkhane','GOLKHANE',this)"><span class="label">GOLKHANE</span><button class="fav" onclick="toggleFav(event,'golkhane','GOLKHANE',this)">☆</button></d[...]
+            <div class="channel" onclick="load('negarestan','NEGARESTAN',this)"><span class="label">NEGARESTAN</span><button class="fav" onclick="toggleFav(event,'negarestan','NEGARESTAN',this)">☆</[...]
             <div class="channel" onclick="load('karoon','KAROON',this)"><span class="label">KAROON</span><button class="fav" onclick="toggleFav(event,'karoon','KAROON',this)">☆</button></div>
-            <div class="channel" onclick="load('sport3','TELEWEBION',this)"><span class="label">TELEWEBION</span><button class="fav" onclick="toggleFav(event,'sport3','TELEWEBION',this)">☆</button></div>
-            <div class="channel" onclick="load('sport1','TELEWEBION1',this)"><span class="label">TELEWEBION1</span><button class="fav" onclick="toggleFav(event,'sport1','TELEWEBION1',this)">☆</button></div>
-            <div class="channel" onclick="load('sport3','TELEWEBION2',this)"><span class="label">TELEWEBION2</span><button class="fav" onclick="toggleFav(event,'sport3','TELEWEBION2',this)">☆</button></div>
+            <div class="channel" onclick="load('sport3','TELEWEBION',this)"><span class="label">TELEWEBION</span><button class="fav" onclick="toggleFav(event,'sport3','TELEWEBION',this)">☆</button><[...]
+            <div class="channel" onclick="load('sport1','TELEWEBION1',this)"><span class="label">TELEWEBION1</span><button class="fav" onclick="toggleFav(event,'sport1','TELEWEBION1',this)">☆</butto[...]
+            <div class="channel" onclick="load('sport3','TELEWEBION2',this)"><span class="label">TELEWEBION2</span><button class="fav" onclick="toggleFav(event,'sport3','TELEWEBION2',this)">☆</butto[...]
             <div class="channel" onclick="load('parseh','PARSEH',this)"><span class="label">PARSEH</span><button class="fav" onclick="toggleFav(event,'parseh','PARSEH',this)">☆</button></div>
-            <div class="channel" onclick="load('nesfejahan','NESFEJAHAN',this)"><span class="label">NESFEJAHAN</span><button class="fav" onclick="toggleFav(event,'nesfejahan','NESFEJAHAN',this)">☆</button></div>
-            <div class="channel" onclick="load('sarbedaran','SARBEDARAN',this)"><span class="label">SARBEDARAN</span><button class="fav" onclick="toggleFav(event,'sarbedaran','SARBEDARAN',this)">☆</button></div>
+            <div class="channel" onclick="load('nesfejahan','NESFEJAHAN',this)"><span class="label">NESFEJAHAN</span><button class="fav" onclick="toggleFav(event,'nesfejahan','NESFEJAHAN',this)">☆</[...]
+            <div class="channel" onclick="load('sarbedaran','SARBEDARAN',this)"><span class="label">SARBEDARAN</span><button class="fav" onclick="toggleFav(event,'sarbedaran','SARBEDARAN',this)">☆</[...]
         </div>
 
         <div class="section" id="regionalSection">
             <h3>Regionala Kanaler</h3>
             <div class="channel" onclick="load('mahabad','MAHABAD',this)"><span class="label">MAHABAD</span><button class="fav" onclick="toggleFav(event,'mahabad','MAHABAD',this)">☆</button></div>
-            <div class="channel" onclick="load('kordestan','KORDESTAN',this)"><span class="label">KORDESTAN</span><button class="fav" onclick="toggleFav(event,'kordestan','KORDESTAN',this)">☆</button></div>
-            <div class="channel" onclick="load('zagros','KERMANSHAH',this)"><span class="label">KERMANSHAH</span><button class="fav" onclick="toggleFav(event,'zagros','KERMANSHAH',this)">☆</button></div>
+            <div class="channel" onclick="load('kordestan','KORDESTAN',this)"><span class="label">KORDESTAN</span><button class="fav" onclick="toggleFav(event,'kordestan','KORDESTAN',this)">☆</butto[...]
+            <div class="channel" onclick="load('zagros','KERMANSHAH',this)"><span class="label">KERMANSHAH</span><button class="fav" onclick="toggleFav(event,'zagros','KERMANSHAH',this)">☆</button><[...]
             <div class="channel" onclick="load('ilam','ILAM',this)"><span class="label">ILAM</span><button class="fav" onclick="toggleFav(event,'ilam','ILAM',this)">☆</button></div>
-            <div class="channel" onclick="load('bushehr','BOOSHEHR',this)"><span class="label">BOOSHEHR</span><button class="fav" onclick="toggleFav(event,'bushehr','BOOSHEHR',this)">☆</button></div>
+            <div class="channel" onclick="load('bushehr','BOOSHEHR',this)"><span class="label">BOOSHEHR</span><button class="fav" onclick="toggleFav(event,'bushehr','BOOSHEHR',this)">☆</button></div[...]
             <div class="channel" onclick="load('abadan','ABADAN',this)"><span class="label">ABADAN</span><button class="fav" onclick="toggleFav(event,'abadan','ABADAN',this)">☆</button></div>
-            <div class="channel" onclick="load('khalijefars','BANDARABBAS',this)"><span class="label">BANDARABBAS</span><button class="fav" onclick="toggleFav(event,'khalijefars','BANDARABBAS',this)">☆</button></div>
+            <div class="channel" onclick="load('khalijefars','BANDARABBAS',this)"><span class="label">BANDARABBAS</span><button class="fav" onclick="toggleFav(event,'khalijefars','BANDARABBAS',this)">[...]
             <div class="channel" onclick="load('khoozestan','AHVAZ',this)"><span class="label">AHVAZ</span><button class="fav" onclick="toggleFav(event,'khoozestan','AHVAZ',this)">☆</button></div>
             <div class="channel" onclick="load('kish','KISH',this)"><span class="label">KISH</span><button class="fav" onclick="toggleFav(event,'kish','KISH',this)">☆</button></div>
             <div class="channel" onclick="load('hamoon','ZAHEDAN',this)"><span class="label">ZAHEDAN</span><button class="fav" onclick="toggleFav(event,'hamoon','ZAHEDAN',this)">☆</button></div>
@@ -174,7 +176,7 @@
             <div class="channel" onclick="load('semnan','SEMNAN',this)"><span class="label">SEMNAN</span><button class="fav" onclick="toggleFav(event,'semnan','SEMNAN',this)">☆</button></div>
             <div class="channel" onclick="load('noor','QOM',this)"><span class="label">QOM</span><button class="fav" onclick="toggleFav(event,'noor','QOM',this)">☆</button></div>
             <div class="channel" onclick="load('qazvin','QAZVIN',this)"><span class="label">QAZVIN</span><button class="fav" onclick="toggleFav(event,'qazvin','QAZVIN',this)">☆</button></div>
-            <div class="channel" onclick="load('jahanbin','4Mahalebakhtiari',this)"><span class="label">4Mahalebakhtiari</span><button class="fav" onclick="toggleFav(event,'jahanbin','4Mahalebakhtiari',this)">☆</button></div>
+            <div class="channel" onclick="load('jahanbin','4Mahalebakhtiari',this)"><span class="label">4Mahalebakhtiari</span><button class="fav" onclick="toggleFav(event,'jahanbin','4Mahalebakhtiari[...]
             <div class="channel" onclick="load('sina','HAMADAN',this)"><span class="label">HAMADAN</span><button class="fav" onclick="toggleFav(event,'sina','HAMADAN',this)">☆</button></div>
             <div class="channel" onclick="load('aflak','LORESTAN',this)"><span class="label">LORESTAN</span><button class="fav" onclick="toggleFav(event,'aflak','LORESTAN',this)">☆</button></div>
             <div class="channel" onclick="load('kerman','KERMAN',this)"><span class="label">KERMAN</span><button class="fav" onclick="toggleFav(event,'kerman','KERMAN',this)">☆</button></div>
@@ -182,15 +184,15 @@
             <div class="channel" onclick="load('fars','FARS',this)"><span class="label">FARS</span><button class="fav" onclick="toggleFav(event,'fars','FARS',this)">☆</button></div>
             <div class="channel" onclick="load('taban','YAZD',this)"><span class="label">YAZD</span><button class="fav" onclick="toggleFav(event,'taban','YAZD',this)">☆</button></div>
             <div class="channel" onclick="load('dena','YASOOJ',this)"><span class="label">YASOOJ</span><button class="fav" onclick="toggleFav(event,'dena','YASOOJ',this)">☆</button></div>
-            <div class="channel" onclick="load('khavaran','KH.JONOBI',this)"><span class="label">KH.JONOBI</span><button class="fav" onclick="toggleFav(event,'khavaran','KH.JONOBI',this)">☆</button></div>
-            <div class="channel" onclick="load('atrak','KH.SHOMALI',this)"><span class="label">KK.SHOMALI</span><button class="fav" onclick="toggleFav(event,'atrak','KH.SHOMALI',this)">☆</button></div>
-            <div class="channel" onclick="load('khorasanrazavi','KH.RAZAVI',this)"><span class="label">KK.RAZAVI</span><button class="fav" onclick="toggleFav(event,'khorasanrazavi','KH.RAZAVI',this)">☆</button></div>
+            <div class="channel" onclick="load('khavaran','KH.JONOBI',this)"><span class="label">KH.JONOBI</span><button class="fav" onclick="toggleFav(event,'khavaran','KH.JONOBI',this)">☆</button>[...]
+            <div class="channel" onclick="load('atrak','KH.SHOMALI',this)"><span class="label">KK.SHOMALI</span><button class="fav" onclick="toggleFav(event,'atrak','KH.SHOMALI',this)">☆</button></d[...]
+            <div class="channel" onclick="load('khorasanrazavi','KH.RAZAVI',this)"><span class="label">KK.RAZAVI</span><button class="fav" onclick="toggleFav(event,'khorasanrazavi','KH.RAZAVI',this)">[...]
             <div class="channel" onclick="load('sabz','GORGAN',this)"><span class="label">GORGAN</span><button class="fav" onclick="toggleFav(event,'sabz','GORGAN',this)">☆</button></div>
-            <div class="channel" onclick="load('tabarestan','MAZANDARAN',this)"><span class="label">MAZANDARAN</span><button class="fav" onclick="toggleFav(event,'tabarestan','MAZANDARAN',this)">☆</button></div>
+            <div class="channel" onclick="load('tabarestan','MAZANDARAN',this)"><span class="label">MAZANDARAN</span><button class="fav" onclick="toggleFav(event,'tabarestan','MAZANDARAN',this)">☆</[...]
             <div class="channel" onclick="load('baran','GILAN',this)"><span class="label">GILAN</span><button class="fav" onclick="toggleFav(event,'baran','GILAN',this)">☆</button></div>
             <div class="channel" onclick="load('sabalan','ARDABIL',this)"><span class="label">ARDABIL</span><button class="fav" onclick="toggleFav(event,'sabalan','ARDABIL',this)">☆</button></div>
             <div class="channel" onclick="load('sahand','TABRIZ',this)"><span class="label">TABRIZ</span><button class="fav" onclick="toggleFav(event,'sahand','TABRIZ',this)">☆</button></div>
-            <div class="channel" onclick="load('azarbayjangharbi','URMIA',this)"><span class="label">URMIA</span><button class="fav" onclick="toggleFav(event,'azarbayjangharbi','URMIA',this)">☆</button></div>
+            <div class="channel" onclick="load('azarbayjangharbi','URMIA',this)"><span class="label">URMIA</span><button class="fav" onclick="toggleFav(event,'azarbayjangharbi','URMIA',this)">☆</but[...]
             <div class="channel" onclick="load('eshragh','ZANJAN',this)"><span class="label">ZANJAN</span><button class="fav" onclick="toggleFav(event,'eshragh','ZANJAN',this)">☆</button></div>
         </div>
 
@@ -337,8 +339,21 @@
         sidebar.classList.toggle('hidden');
     }
 
+    // Hjälpfunktion: justera .container höjd så att player alltid syns och sidebar scrollar internt
+    function adjustContainerHeight() {
+        const header = document.querySelector('.header');
+        const container = document.getElementById('mainContainer');
+        if (!header || !container) return;
+        const headerHeight = header.getBoundingClientRect().height || 0;
+        // Sätt container height så att den fyller kvarvarande viewport under header
+        container.style.height = (window.innerHeight - headerHeight) + 'px';
+    }
+
     // Init: sätt dataset på .channel och starta observer för mobil
     document.addEventListener('DOMContentLoaded', () => {
+        // Anpassa layout direkt så att player syns utan att behöva scrolla sidan
+        adjustContainerHeight();
+
         const channels = document.querySelectorAll('.channel');
         channels.forEach(ch => {
             // sätt data-id och data-name från onclick-attribute (om dataset inte redan finns)
@@ -393,6 +408,10 @@
             document.querySelectorAll('.channel').forEach(ch => observer.observe(ch));
         }
     });
+
+    // Justera höjd även vid resize / orientationchange
+    window.addEventListener('resize', adjustContainerHeight);
+    window.addEventListener('orientationchange', adjustContainerHeight);
 
     // Exponera funktioner (för inline-attr)
     window.toggleFav = toggleFav;
